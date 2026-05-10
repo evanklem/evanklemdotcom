@@ -61,13 +61,14 @@ describe('tickSand', () => {
   })
 
   it('settles a vertical column over multiple ticks into a pile', () => {
-    let { grid, w, h } = fromAscii([
+    const { grid: initialGrid, w, h } = fromAscii([
       '..x..',
       '..x..',
       '..x..',
       '..x..',
       '.....',
     ])
+    let grid = initialGrid
     for (let i = 0; i < 10; i += 1) grid = tickSand(grid, w, h)
     // After enough ticks, the four sand cells should be on the floor,
     // arranged in a small pile (4 cells; not all stacked vertically).

@@ -32,10 +32,19 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
   const [imagesReady, setImagesReady] = useState(false)
   const [draggingDecor, setDraggingDecor] = useState<string | null>(null)
   const [ghost, setGhost] = useState<{ id: string; x: number; y: number } | null>(null)
+  const [counts, setCounts] = useState({ fish: 0, decor: 0 })
+
+  const syncCounts = useCallback(() => {
+    setCounts({
+      fish: stateRef.current.fish.length,
+      decor: stateRef.current.decor.length,
+    })
+  }, [])
 
   // Initial load + image preload + tank start
   useEffect(() => {
     stateRef.current = load()
+    syncCounts()
     let cleanup: (() => void) | null = null
     let cancelled = false
     preloadImages().then((images) => {
@@ -53,7 +62,7 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
       cancelled = true
       cleanup?.()
     }
-  }, [])
+  }, [syncCounts])
 
   const queueSave = useCallback(() => {
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
@@ -65,8 +74,9 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
   const handleReset = useCallback(() => {
     stateRef.current = emptyState()
     save(stateRef.current)
+    syncCounts()
     forceTick((n) => n + 1)
-  }, [])
+  }, [syncCounts])
 
   const handleAddFish = useCallback(() => {
     const color: FishColor = FISH_COLORS[Math.floor(Math.random() * FISH_COLORS.length)]
@@ -77,8 +87,9 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
       y: TANK_H * 0.4 + Math.random() * (TANK_H * 0.3),
     })
     queueSave()
+    syncCounts()
     forceTick((n) => n + 1)
-  }, [queueSave])
+  }, [queueSave, syncCounts])
 
   const onPointerDownCanvas = useCallback((e: ReactPointerEvent<HTMLCanvasElement>) => {
     e.currentTarget.setPointerCapture(e.pointerId)
@@ -100,10 +111,11 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
         const inside = x >= d.x && x <= d.x + meta.width && y >= d.y && y <= d.y + meta.height
         return !inside
       })
+      syncCounts()
       dragRef.current = { kind: 'erase' }
       queueSave()
     }
-  }, [tool, queueSave])
+  }, [tool, queueSave, syncCounts])
 
   const onPointerMoveCanvas = useCallback((e: ReactPointerEvent<HTMLCanvasElement>) => {
     if (!dragRef.current) return
@@ -152,6 +164,7 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
       }
       stateRef.current.decor.push(placed)
       queueSave()
+      syncCounts()
     }
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp)
@@ -159,10 +172,7 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
       window.removeEventListener('pointermove', onMove)
       window.removeEventListener('pointerup', onUp)
     }
-  }, [draggingDecor, queueSave])
-
-  const fishCount = stateRef.current.fish.length
-  const decorCount = stateRef.current.decor.length
+  }, [draggingDecor, queueSave, syncCounts])
 
   return (
     <div className="aquarium-body">
@@ -173,9 +183,9 @@ export function AquariumPanelBody({ closeButton }: { closeButton: ReactNode }) {
           <span className="aquarium-readout__title" data-text="Build your tank">Build your tank</span>
         </div>
         <div className="aquarium-readout__counts">
-          <span>Fish: {fishCount}</span>
+          <span>Fish: {counts.fish}</span>
           <span aria-hidden="true">·</span>
-          <span>Decor: {decorCount}</span>
+          <span>Decor: {counts.decor}</span>
         </div>
       </header>
 

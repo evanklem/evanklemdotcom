@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability, react-hooks/set-state-in-effect */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
@@ -101,11 +102,19 @@ function findHalves(scene: Group): { top: Object3D | null; bottom: Object3D | nu
   return ay >= by ? { top: a, bottom: b } : { top: b, bottom: a }
 }
 
-export function Vase() {
+interface VaseProps {
+  onReady?: () => void
+}
+
+export function Vase({ onReady }: VaseProps) {
   const groupRef = useRef<Group>(null)
   const { activeRegion } = useNavState()
   const { size } = useThree()
   const gltf = useGLTF(VASE_PATH) as VaseGltf
+
+  useEffect(() => {
+    onReady?.()
+  }, [onReady])
 
   const matsRef = useRef<ShaderMaterial[]>([])
   useEffect(() => {
@@ -182,7 +191,7 @@ export function Vase() {
   // Track last quantized CSS-var color so we only write to the DOM when the
   // visible color actually changed (cuts a per-frame style invalidation that
   // cascaded through the 2800-line panel stylesheet).
-  const lastCssRef = useRef({ r: -1, g: -1, b: -1 })
+  const lastCssRef = useRef({ r: -1, g: -1, b: -1, t: -1 })
 
   useFrame((_, delta) => {
     timeRef.current += delta
@@ -270,7 +279,12 @@ export function Vase() {
       const g = Math.round(currentTint.y * 255)
       const b = Math.round(currentTint.z * 255)
       const last = lastCssRef.current
-      if (r !== last.r || g !== last.g || b !== last.b) {
+      const cssUpdateDue = last.t < 0 || timeRef.current - last.t > 0.08
+      const colorChanged =
+        Math.abs(r - last.r) > 1 ||
+        Math.abs(g - last.g) > 1 ||
+        Math.abs(b - last.b) > 1
+      if (cssUpdateDue && colorChanged) {
         document.documentElement.style.setProperty(
           '--vase-cycle-color',
           `rgb(${r} ${g} ${b})`,
@@ -278,6 +292,7 @@ export function Vase() {
         last.r = r
         last.g = g
         last.b = b
+        last.t = timeRef.current
       }
     }
 

@@ -2,27 +2,38 @@ import { useEffect, useState } from 'react'
 import './BootSequence.css'
 
 interface Props {
+  ready: boolean
   onComplete: () => void
 }
 
-const TOTAL_MS = 1900
+const MIN_MS = 1700
 
-export function BootSequence({ onComplete }: Props) {
+export function BootSequence({ ready, onComplete }: Props) {
   const [done, setDone] = useState(false)
+  const [minElapsed, setMinElapsed] = useState(false)
 
   useEffect(() => {
-    if (done) return
-    const t = setTimeout(() => {
-      setDone(true)
-      onComplete()
-    }, TOTAL_MS)
+    const t = setTimeout(() => setMinElapsed(true), MIN_MS)
     return () => clearTimeout(t)
-  }, [done, onComplete])
+  }, [])
+
+  useEffect(() => {
+    if (done || !ready || !minElapsed) return
+    let completeTimer: number | undefined
+    const fadeTimer = setTimeout(() => {
+      setDone(true)
+      completeTimer = window.setTimeout(onComplete, 460)
+    }, 260)
+    return () => {
+      clearTimeout(fadeTimer)
+      if (completeTimer) clearTimeout(completeTimer)
+    }
+  }, [done, minElapsed, onComplete, ready])
 
   const skip = () => {
-    if (done) return
+    if (done || !ready) return
     setDone(true)
-    onComplete()
+    setTimeout(onComplete, 460)
   }
 
   return (
@@ -33,9 +44,6 @@ export function BootSequence({ onComplete }: Props) {
       onKeyDown={skip}
     >
       <div className="boot__fractal" aria-hidden="true" />
-      <div className="boot__tunnel" aria-hidden="true" />
-      <div className="boot__portal" aria-hidden="true" />
-      <p className="boot__brand">evanklem.com</p>
     </div>
   )
 }

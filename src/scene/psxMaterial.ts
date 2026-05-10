@@ -65,9 +65,17 @@ export function createPsxMaterial(opts: PsxMaterialOpts): ShaderMaterial {
 // when the canvas resizes.
 class PsxRegistry {
   private materials = new Set<ShaderMaterial>()
-  add(m: ShaderMaterial) { this.materials.add(m) }
+  private width = 1
+  private height = 1
+  add(m: ShaderMaterial) {
+    this.materials.add(m)
+    const v = m.uniforms.uViewportSize.value as Vector2
+    v.set(this.width, this.height)
+  }
   remove(m: ShaderMaterial) { this.materials.delete(m) }
   setViewport(width: number, height: number) {
+    this.width = width
+    this.height = height
     for (const m of this.materials) {
       const v = m.uniforms.uViewportSize.value as Vector2
       if (v.x !== width || v.y !== height) v.set(width, height)

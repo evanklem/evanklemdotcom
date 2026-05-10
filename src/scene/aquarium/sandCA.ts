@@ -22,15 +22,15 @@ export function tickSandInPlace(grid: Uint8Array, w: number = SAND_W, h: number 
     // when diagonals slip.
     const leftFirst = y % 2 === 0
     if (leftFirst) {
-      for (let x = 0; x < w; x += 1) trySettle(grid, x, y, w, h)
+      for (let x = 0; x < w; x += 1) trySettle(grid, x, y, w)
     } else {
-      for (let x = w - 1; x >= 0; x -= 1) trySettle(grid, x, y, w, h)
+      for (let x = w - 1; x >= 0; x -= 1) trySettle(grid, x, y, w)
     }
   }
   return grid
 }
 
-function trySettle(grid: Uint8Array, x: number, y: number, w: number, _h: number) {
+function trySettle(grid: Uint8Array, x: number, y: number, w: number) {
   const idx = y * w + x
   if (grid[idx] !== 1) return
   const below = (y + 1) * w + x

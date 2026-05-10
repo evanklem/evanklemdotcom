@@ -67,7 +67,7 @@ const ABOUT_MODES: Record<
     label: 'Profile',
     image: '/content/about/selfpfp.png',
     alt: 'Portrait of Evan Ramirez-Klem',
-    headline: 'Full-stack product engineer.',
+    headline: 'Full-stack engineer.',
     intro:
       'I build web apps end to end with React, TypeScript, PostgreSQL, and AI-native workflows. Looking for full-time work and open to relocation.',
   },
@@ -568,6 +568,8 @@ export function SectionPanel() {
 
   useEffect(() => {
     if (activeRegion) {
+      // Keep the closing panel content mounted during its slide-out animation.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLastRegionId(activeRegion)
     }
   }, [activeRegion])
@@ -856,6 +858,8 @@ function ArtPanelBody({ closeButton }: { closeButton: ReactNode }) {
                     src={expandedFile.src}
                     controls
                     autoPlay
+                    muted
+                    loop
                     preload="metadata"
                     playsInline
                     aria-label={expandedFile.filename}
@@ -1022,7 +1026,16 @@ function ArtFileViewer({
           <img src={file.src} alt={file.alt ?? file.filename} />
         )}
         {file.type === 'video' && (
-          <video src={file.src} controls preload="metadata" playsInline aria-label={file.filename} />
+          <video
+            src={file.src}
+            controls
+            autoPlay
+            muted
+            loop
+            preload="metadata"
+            playsInline
+            aria-label={file.filename}
+          />
         )}
         {file.type === 'audio' && <ArtAudioPlayer file={file} />}
       </div>
@@ -1480,10 +1493,6 @@ function AboutModeContent({ activeMode }: { activeMode: AboutMode }) {
             I’m most interested in product work where fast iteration and AI-native workflows are
             part of the engineering culture. That leverage lets me focus on architecture, design,
             and the systems underneath the interface.
-          </p>
-          <p>
-            I have used generative AI tools since running local Stable Diffusion models as a
-            teenager. I care most about using them as working tools, not as a layer of polish.
           </p>
           <p>
             Outside of work, I’m into Linux, customizing my setup, creative software, and games.

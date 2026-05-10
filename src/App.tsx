@@ -9,16 +9,17 @@ import { Cursor } from './scene/Cursor'
 
 function App() {
   const [booted, setBooted] = useState(false)
+  const [vaseReady, setVaseReady] = useState(false)
 
   return (
     <NavProvider>
       <VideoBackground />
-      <Scene />
+      <Scene onVaseReady={() => setVaseReady(true)} />
       <VerticalMenu />
       <SectionPanel />
       <div className="grain" aria-hidden="true" />
       <Cursor />
-      {!booted && <BootSequence onComplete={() => setBooted(true)} />}
+      {!booted && <BootSequence ready={vaseReady} onComplete={() => setBooted(true)} />}
     </NavProvider>
   )
 }

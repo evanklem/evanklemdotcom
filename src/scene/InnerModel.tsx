@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/immutability */
 import { useEffect, useMemo, useRef } from 'react'
 import { animated, useSpring } from '@react-spring/three'
 import { useFrame, useThree } from '@react-three/fiber'
@@ -22,6 +23,7 @@ const COMPACT_REVEAL_DELAY_MS = 0
 const IDLE_X_DESKTOP = -0.66
 const ACTIVE_X_DESKTOP = -1.72
 const ACTIVE_Y_COMPACT = 0.82
+const ACTIVE_X_COMPACT = 0
 const POS_LERP_TAU = 0.18
 const DESKTOP_PANEL_LEFT_NDC = -0.2
 const DESKTOP_EXPOSED_CENTER_NDC = -0.6
@@ -176,7 +178,7 @@ export function InnerModel({ id, tint, modelPath }: Props) {
         },
       ],
     })
-  }, [activeResizeKey, api, isActive, visibleY])
+  }, [activeResizeKey, api, compactTarget, isActive, visibleY])
 
   const userRotRef = useRef(0)
   const dragStartRotRef = useRef(0)
@@ -231,7 +233,7 @@ export function InnerModel({ id, tint, modelPath }: Props) {
     const activeDesktopX = leftLimit <= rightLimit
       ? Math.min(Math.max(preferredX, leftLimit), rightLimit)
       : (leftLimit + rightLimit) / 2
-    const targetX = compact ? 0 : isActive ? activeDesktopX : IDLE_X_DESKTOP
+    const targetX = compact ? isActive ? ACTIVE_X_COMPACT : 0 : isActive ? activeDesktopX : IDLE_X_DESKTOP
     const k = 1 - Math.exp(-delta / POS_LERP_TAU)
     posXRef.current += (targetX - posXRef.current) * k
 
