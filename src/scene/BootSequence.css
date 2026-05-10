@@ -1,0 +1,284 @@
+/* Liminal PS1 web splash: dark tiled geometry, moire dither, one pixel logo. */
+
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  color: #d8f8e2;
+  background:
+    radial-gradient(circle at 50% 47%, rgba(122, 154, 124, 0.22), transparent 18rem),
+    radial-gradient(circle at 52% 74%, rgba(40, 255, 231, 0.12), transparent 21rem),
+    linear-gradient(180deg, #050608 0%, #0a0c0a 52%, #020304 100%);
+  isolation: isolate;
+  animation: boot-fade 1.9s steps(14, end) forwards;
+}
+
+.boot--done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.boot::before,
+.boot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.boot::before {
+  z-index: 8;
+  background-image:
+    radial-gradient(circle, rgba(218, 255, 226, 0.22) 0 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.7) 0 1px, transparent 1px),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.06) 0,
+      rgba(255, 255, 255, 0.06) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  background-position: 0 0, 3px 3px, 0 0;
+  background-size: 6px 6px, 6px 6px, 100% 4px;
+  mix-blend-mode: overlay;
+  opacity: 0.92;
+  animation: boot-dither 0.36s steps(2, end) infinite;
+}
+
+.boot::after {
+  z-index: 9;
+  background:
+    radial-gradient(ellipse at center, transparent 20%, rgba(0, 0, 0, 0.74) 76%),
+    linear-gradient(90deg, rgba(255, 39, 130, 0.13), transparent 16%, transparent 84%, rgba(36, 255, 232, 0.13));
+}
+
+.boot__fractal,
+.boot__tunnel,
+.boot__portal {
+  position: absolute;
+  pointer-events: none;
+  image-rendering: pixelated;
+}
+
+.boot__fractal {
+  z-index: 1;
+  inset: -16vmax;
+  background:
+    repeating-conic-gradient(
+      from 45deg at 50% 52%,
+      rgba(164, 189, 132, 0.2) 0deg 3deg,
+      rgba(3, 7, 8, 0.96) 3deg 6deg,
+      rgba(36, 255, 232, 0.12) 6deg 8deg,
+      rgba(3, 7, 8, 0.96) 8deg 14deg
+    ),
+    repeating-radial-gradient(
+      circle at 50% 52%,
+      rgba(214, 255, 221, 0.13) 0 2px,
+      rgba(0, 0, 0, 0) 2px 22px
+    );
+  filter: contrast(2.1) saturate(0.62);
+  opacity: 0;
+  transform: scale(1.38) rotate(0deg);
+  animation: boot-fractal 1.9s steps(12, end) forwards;
+}
+
+.boot__tunnel {
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 46%, rgba(205, 232, 183, 0.13) 46% 47%, transparent 47%),
+    linear-gradient(65deg, transparent 0 46%, rgba(32, 255, 232, 0.1) 46% 47%, transparent 47%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 28px);
+  background-size: 160px 160px, 160px 160px, 28px 28px, 28px 28px;
+  background-position: center;
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: perspective(520px) rotateX(58deg) translateY(15vh) scale(1.24);
+  animation: boot-tunnel 1.9s steps(10, end) forwards;
+}
+
+.boot__portal {
+  z-index: 3;
+  width: min(82vmin, 620px);
+  aspect-ratio: 1;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(219, 255, 216, 0.46) 0 2px, transparent 3px),
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      rgba(169, 205, 152, 0.42) 0 2px,
+      rgba(0, 0, 0, 0) 2px 15px,
+      rgba(36, 255, 232, 0.16) 15px 17px,
+      rgba(0, 0, 0, 0) 17px 34px
+    );
+  border-radius: 50%;
+  box-shadow:
+    4px 0 0 rgba(255, 39, 130, 0.22),
+    -4px 0 0 rgba(36, 255, 232, 0.2),
+    0 0 48px rgba(167, 204, 153, 0.18);
+  filter: contrast(1.9) saturate(0.72);
+  mix-blend-mode: screen;
+  transform: scale(0.68);
+  animation: boot-portal 1.46s steps(9, end) 0.14s forwards;
+}
+
+.boot__brand {
+  position: relative;
+  z-index: 5;
+  width: min(68vw, 520px);
+  aspect-ratio: 1096 / 230;
+  margin: 0;
+  overflow: hidden;
+  color: transparent;
+  font-size: 0;
+  text-indent: -999px;
+  image-rendering: pixelated;
+  opacity: 0;
+  transform: scale(0.86);
+  contain: paint;
+  animation: boot-brand 1.48s steps(10, end) 0.26s forwards;
+}
+
+.boot__brand::before,
+.boot__brand::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: url('/evanklemdotcomlogo.png');
+  mask-image: url('/evanklemdotcomlogo.png');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+}
+
+.boot__brand::before {
+  z-index: 2;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.22) 0 1px,
+      rgba(0, 0, 0, 0.18) 1px 2px,
+      transparent 2px 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 3px,
+      rgba(0, 0, 0, 0.16) 3px 4px
+    ),
+    #c9f7cc;
+  filter: contrast(1.22) drop-shadow(0 0 10px rgba(201, 247, 204, 0.44));
+}
+
+.boot__brand::after {
+  z-index: 3;
+  transform: translate(5px, 4px);
+  background: #c9f7cc;
+  -webkit-mask-image: url('/evanklemdotcomlogo-dither-2x.png');
+  mask-image: url('/evanklemdotcomlogo-dither-2x.png');
+  opacity: 0.34;
+  mix-blend-mode: screen;
+}
+
+@keyframes boot-fade {
+  0% { opacity: 1; filter: contrast(1.18) saturate(0.7); }
+  68% { opacity: 1; filter: contrast(1.52) saturate(0.78); }
+  100% { opacity: 0; filter: contrast(2.1) saturate(0.18); }
+}
+
+@keyframes boot-dither {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(3px, -2px); }
+  100% { transform: translate(-2px, 3px); }
+}
+
+@keyframes boot-fractal {
+  0% {
+    opacity: 0;
+    transform: scale(1.7) rotate(-8deg);
+  }
+  18% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.32;
+    transform: scale(1.04) rotate(8deg);
+  }
+}
+
+@keyframes boot-tunnel {
+  0% {
+    opacity: 0;
+    transform: perspective(520px) rotateX(64deg) translateY(30vh) scale(1.5);
+  }
+  24% {
+    opacity: 0.54;
+  }
+  100% {
+    opacity: 0.16;
+    transform: perspective(520px) rotateX(58deg) translateY(8vh) scale(1.05);
+  }
+}
+
+@keyframes boot-portal {
+  0% {
+    opacity: 0;
+    transform: scale(0.44) rotate(0deg);
+    filter: blur(6px) contrast(2.4) saturate(0.5);
+  }
+  28% {
+    opacity: 0.72;
+    transform: scale(1.08) rotate(12deg);
+    filter: blur(0) contrast(1.9) saturate(0.72);
+  }
+  72% {
+    opacity: 0.5;
+    transform: scale(0.98) rotate(18deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.26) rotate(34deg);
+    filter: blur(3px) contrast(2.8) saturate(0.2);
+  }
+}
+
+@keyframes boot-brand {
+  0% {
+    opacity: 0;
+    transform: scale(0.72) translateY(8px);
+    filter: blur(7px) contrast(2.2);
+  }
+  22% {
+    opacity: 1;
+    transform: scale(1.04) translateY(0);
+    filter: blur(0) contrast(1.5);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.14) translateY(-6px);
+    filter: blur(3px) contrast(2.4);
+  }
+}
+
+@media (max-width: 900px) {
+  .boot__brand {
+    width: min(84vw, 420px);
+  }
+
+  .boot__portal {
+    width: min(92vmin, 440px);
+  }
+}

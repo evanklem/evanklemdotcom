@@ -1,0 +1,56 @@
+/* RealWorld 3D Blue-Silver cursor set.
+   Source: https://www.rw-designer.com/cursor-set/rw-blue-silver
+   Author: Vlasta. License: CC BY. */
+
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: url('/cursors/rw-arrow.cur'), auto;
+  }
+
+  body * {
+    cursor: url('/cursors/rw-arrow.cur'), auto !important;
+  }
+
+  :is(
+      input,
+      textarea,
+      [contenteditable='true'],
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      li,
+      .panel__body,
+      .section-panel
+    ),
+  :is(
+      input,
+      textarea,
+      [contenteditable='true'],
+      p,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      li,
+      .panel__body,
+      .section-panel
+    )
+    * {
+    cursor: url('/cursors/rw-beam.cur'), text !important;
+  }
+
+  :is([data-interactive], a, button, [role='button']),
+  :is([data-interactive], a, button, [role='button']) * {
+    cursor: url('/cursors/rw-hand.cur'), pointer !important;
+  }
+}
+
+.cursor {
+  display: none;
+}

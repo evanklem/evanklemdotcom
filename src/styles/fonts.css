@@ -1,0 +1,22 @@
+@import '@fontsource/archivo-black/400.css';
+@import '@fontsource/archivo/400.css';
+@import '@fontsource/archivo/500.css';
+@import '@fontsource/archivo/700.css';
+@import '@fontsource/geist-sans/400.css';
+@import '@fontsource/geist-sans/500.css';
+@import '@fontsource/geist-sans/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@import '@fontsource/michroma/400.css';
+@import '@fontsource/roboto-mono/latin-400.css';
+@import '@fontsource/roboto-mono/latin-700.css';
+
+:root {
+  --font-display: 'Roboto Mono', 'JetBrains Mono', ui-monospace, monospace;
+  --font-body: 'Geist', 'Archivo', system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  /* Tight, slightly squared geometric used for menu labels — Eurostile-ish
+     dashboard vibe rather than a gamer cliché. */
+  --font-menu: 'Michroma', 'Archivo', system-ui, sans-serif;
+}

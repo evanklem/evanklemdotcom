@@ -1,0 +1,12 @@
+Project glyph masks sourced from the Learner's Maya Glyph Guide:
+https://mayaglyphs.org/
+
+Original source image paths used on 2026-05-06:
+- Art section: IBACH, 1642, AS5, https://mayaglyphs.org/LooperMacri600/AS5_1.png
+- Ephemera Web Platform: NAAH / NAH, house/container, https://mayaglyphs.org/LooperMacri600/1G2a_1.png
+- AI Talent Agent: IL / ILA, see/observe, https://mayaglyphs.org/LooperMacri600/HE1_1.png
+- Evanflow: BIH, road/way, https://mayaglyphs.org/BonnImg/0585st.jpg
+- Omarchy Avocado Theme: AHN, leaf/paper, https://mayaglyphs.org/LooperMacri600/HT1_1.png
+- AI Fraud Detection System: TOK, flint/cut, https://mayaglyphs.org/LooperMacri600/ZBC_1.png
+- 8bitcpu: WAXAK, number 8, https://mayaglyphs.org/BonnImg/5008st.jpg
+- PartyPredict: WINIK / WINAK / WINAL, person, https://mayaglyphs.org/BonnImg/0521st.jpg

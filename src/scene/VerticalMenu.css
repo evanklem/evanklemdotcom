@@ -1,0 +1,471 @@
+/* Vertical menu — memory-card-slot pills, glyph floats outside-left.
+   Desktop: vertical column close to the vase silhouette.
+   Compact: horizontal strip at bottom; glyphs only (label hidden). */
+
+.vmenu {
+  position: fixed;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  pointer-events: auto;
+  font-family: var(--font-body);
+  z-index: 40;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.vmenu[data-hidden='true'] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 901px) {
+  .vmenu {
+    flex-direction: column;
+    gap: 14px;
+    /* Aspect-correct anchor. Camera (fov 50, z=3) gives a vertical world
+       span of 2*3*tan(25°) ≈ 2.798. Vase right edge sits at ~25vh past
+       viewport center; pull the menu in so its chev sits ~3vh inside the
+       silhouette rather than 30px outside. The chev + ~14px gap reads as
+       the gap to the vase. */
+    left: calc(50vw + 6.5vh);
+    right: auto;
+    top: 50%;
+    transform: translateY(calc(-50% - 35px));
+  }
+  .vmenu[data-hidden='true'] {
+    transform: translate(30px, calc(-50% - 35px));
+  }
+}
+
+@media (max-width: 900px) {
+  .vmenu {
+    flex-direction: row;
+    gap: clamp(8px, 3vw, 16px);
+    bottom: max(18px, env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    justify-content: center;
+    width: min(100vw, 520px);
+    padding: 8px clamp(10px, 4vw, 18px);
+    box-sizing: border-box;
+  }
+  .vmenu[data-hidden='true'] {
+    transform: translate(-50%, 30px);
+  }
+}
+
+.vmenu__item {
+  display: block;
+  transform-origin: left center;
+  transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.vmenu__brand {
+  width: max-content;
+  margin: 0 0 4px;
+  padding-left: 8px;
+  pointer-events: none;
+}
+
+.vmenu__brand-mark {
+  position: relative;
+  display: block;
+  width: clamp(320px, 25vw, 390px);
+  aspect-ratio: 1096 / 230;
+  margin-left: -42px;
+  transform: translate(10px, 10px);
+  opacity: 0.88;
+  image-rendering: pixelated;
+  isolation: isolate;
+  contain: paint;
+}
+
+.vmenu__brand-mark::before,
+.vmenu__brand-mark::after,
+.vmenu__brand-mark .vmenu__brand-dither {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.28) 0 1px,
+      rgba(0, 0, 0, 0.16) 1px 2px,
+      transparent 2px 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 3px,
+      rgba(0, 0, 0, 0.18) 3px 4px
+    ),
+    var(--vase-cycle-color, #ff3a8a);
+  -webkit-mask-image: url('/evanklemdotcomlogo.png');
+  mask-image: url('/evanklemdotcomlogo.png');
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+  pointer-events: none;
+}
+
+.vmenu__brand-mark::before {
+  z-index: 2;
+}
+
+.vmenu__brand-mark::before {
+  filter: contrast(1.22);
+}
+
+.vmenu__brand-mark::after {
+  z-index: 1;
+  transform: translate(3px, 3px);
+  background: #050505;
+  opacity: 0.7;
+}
+
+.vmenu__brand-mark .vmenu__brand-dither {
+  z-index: 3;
+  background: var(--vase-cycle-color, #ff3a8a);
+  -webkit-mask-image: url('/evanklemdotcomlogo-dither-2x.png');
+  mask-image: url('/evanklemdotcomlogo-dither-2x.png');
+  opacity: 0.34;
+  mix-blend-mode: screen;
+  image-rendering: pixelated;
+}
+
+@media (min-width: 901px) {
+  .vmenu__item {
+    transform: translateX(var(--curve-x, 0));
+  }
+}
+
+@media (max-width: 900px) {
+  .vmenu__brand {
+    display: none;
+  }
+}
+
+/* The button is a row container — glyph + pill side by side, no chrome
+   on the button itself. */
+.vmenu__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--c-bone);
+  font-family: var(--font-body);
+}
+
+@media (max-width: 900px) {
+  .vmenu__btn {
+    gap: 0;
+  }
+}
+
+/* GLYPH — lives outside the pill, has its own glow so it stands out
+   against any background regardless of the pill's fill. */
+.vmenu__glyph {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  filter:
+    drop-shadow(0 0 10px color-mix(in srgb, var(--accent, #c4ff00) 75%, transparent))
+    drop-shadow(0 0 22px color-mix(in srgb, var(--accent, #c4ff00) 55%, transparent));
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), filter 0.25s;
+}
+
+.vmenu__glyph::before,
+.vmenu__glyph::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: var(--glyph-mask);
+  mask-image: var(--glyph-mask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  /* Glyph PNGs are 8-bit grayscale with no alpha channel — without
+     luminance mode the mask is treated as fully opaque and renders as
+     a solid square. */
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+}
+
+.vmenu__glyph::before {
+  background: rgba(0, 0, 0, 0.62);
+  transform: translate(2px, 2px);
+}
+
+.vmenu__glyph::after {
+  background: var(--accent, #c4ff00);
+}
+
+.vmenu__btn:hover .vmenu__glyph,
+.vmenu__item--active .vmenu__glyph {
+  transform: translateX(-3px) scale(1.06);
+  filter:
+    drop-shadow(0 0 14px color-mix(in srgb, var(--accent, #c4ff00) 90%, transparent))
+    drop-shadow(0 0 30px color-mix(in srgb, var(--accent, #c4ff00) 70%, transparent));
+}
+
+.vmenu__btn:hover .vmenu__glyph::before,
+.vmenu__item--active .vmenu__glyph::before {
+  transform: translate(3px, 3px);
+}
+
+@media (max-width: 900px) {
+  .vmenu__glyph {
+    width: clamp(48px, 15vw, 64px);
+    height: clamp(48px, 15vw, 64px);
+  }
+}
+
+/* PILL — memory-card-slot tab. Layered fill:
+   - solid dark base
+   - bevel highlight on top edge, shadow on bottom (flat colors, no real lighting)
+   - accent stripe down the right edge
+   - smoked-glass texture over the whole element */
+.vmenu__pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 18px 13px 16px;
+  width: clamp(190px, 16vw, 260px);
+  border-radius: 6px;
+  /* Solid dark base + flat bevel via gradient stops (no gradients pretending
+     to be lighting; just hard color steps for that PSX/menu look). */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.16) 0,
+      rgba(255, 255, 255, 0.16) 2px,
+      transparent 2px,
+      transparent calc(100% - 3px),
+      rgba(0, 0, 0, 0.32) calc(100% - 3px),
+      rgba(0, 0, 0, 0.32) 100%
+    ),
+    linear-gradient(180deg, rgba(28, 30, 34, 0.48) 0%, rgba(7, 8, 12, 0.54) 100%);
+  backdrop-filter: blur(18px) saturate(1.45) contrast(1.08);
+  -webkit-backdrop-filter: blur(18px) saturate(1.45) contrast(1.08);
+  border: 1px solid color-mix(in srgb, var(--accent, #c4ff00) 32%, rgba(0, 0, 0, 0.4));
+  color: var(--c-bone);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.25s, box-shadow 0.25s, color 0.25s;
+}
+
+@media (max-width: 900px) {
+  .vmenu__pill {
+    display: none;
+  }
+}
+
+/* Fine noisy glass texture across the whole pill, avoiding grid/scuff shapes. */
+.vmenu__pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.35' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.72 0 0 0 0 0.72 0 0 0 0 0.72 0 0 0 0.34 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.08));
+  background-size: 72px 72px, 100% 100%;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+  z-index: 3;
+  opacity: 0.55;
+}
+
+/* Soft inner shadow for the slot-recessed feel — sits below the dither. */
+.vmenu__pill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+    inset 0 0 16px rgba(0, 0, 0, 0.45);
+  z-index: 2;
+}
+
+/* Accent stripe down the RIGHT edge of the pill. */
+.vmenu__stripe {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  right: 4px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent, #c4ff00);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent, #c4ff00) 70%, transparent);
+  opacity: 0.55;
+  transition: opacity 0.25s, box-shadow 0.25s;
+  z-index: 4;
+}
+
+.vmenu__btn:hover .vmenu__stripe {
+  opacity: 1;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent, #c4ff00) 90%, transparent);
+  animation: vmenu-stripe-pulse 1.4s ease-in-out infinite;
+}
+
+.vmenu__item--active .vmenu__stripe {
+  opacity: 1;
+  width: 5px;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent, #c4ff00) 95%, transparent);
+  animation: vmenu-stripe-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes vmenu-stripe-pulse {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(0.85); filter: brightness(1.4); }
+}
+
+/* Chevron — selected indicator, sits left of the label. */
+.vmenu__chev {
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  width: 12px;
+  font-size: 13px;
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent, #c4ff00) 70%, var(--c-bone));
+  opacity: 0.55;
+  transition: opacity 0.25s, transform 0.25s, color 0.25s;
+}
+
+.vmenu__btn:hover .vmenu__chev {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+.vmenu__item--active .vmenu__chev {
+  opacity: 1;
+  transform: translateX(2px);
+  color: var(--accent, #c4ff00);
+}
+
+/* Label — Michroma (Eurostile-ish) + dithered scanline fill via ::before
+   ghost layer. The base text renders soft, then a striped overlay clips
+   to the same glyphs to give the antialias-jitter / CRT-dither look. */
+.vmenu__label {
+  position: relative;
+  z-index: 5;
+  font-family: var(--font-menu, var(--font-display));
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  pointer-events: none;
+  flex: 1;
+  /* Crisp-but-stippled rendering. text-shadow stagger fakes a 1-px
+     dither aliasing along the baseline. */
+  text-shadow:
+    1px 0 0 rgba(0, 0, 0, 0.55),
+    -1px 0 0 color-mix(in srgb, var(--accent, #c4ff00) 18%, transparent),
+    0 1px 0 rgba(0, 0, 0, 0.4);
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Striped overlay clipped to the label text — gives a scanline/dither
+   pattern across each glyph rather than a solid fill. */
+.vmenu__label::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.55) 0,
+    rgba(255, 255, 255, 0.55) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  mix-blend-mode: screen;
+  opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+  .vmenu__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .vmenu__label::before {
+    display: none;
+  }
+}
+
+/* Hover/active visual on the pill body. */
+.vmenu__btn:hover .vmenu__pill {
+  border-color: color-mix(in srgb, var(--accent, #c4ff00) 70%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent, #c4ff00) 28%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 901px) {
+  .vmenu__btn:hover .vmenu__pill {
+    transform: translateX(4px);
+  }
+}
+
+.vmenu__item--active .vmenu__pill {
+  border-color: var(--accent, #c4ff00);
+  color: var(--accent, #c4ff00);
+  box-shadow:
+    0 0 0 1px var(--accent, #c4ff00),
+    0 0 28px color-mix(in srgb, var(--accent, #c4ff00) 35%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--accent, #c4ff00) 18%, transparent);
+}
+
+@media (min-width: 901px) {
+  .vmenu__item--active .vmenu__pill {
+    transform: translateX(8px);
+  }
+}
+
+/* Mayan codex glyph SVG masks (sourced from mayaglyphs.org). */
+.vmenu__glyph--water {
+  --glyph-mask: url('/glyphs/ha_water_inv.png');
+}
+.vmenu__glyph--fire {
+  --glyph-mask: url('/glyphs/kahk_fire_inv.png');
+}
+.vmenu__glyph--sun {
+  --glyph-mask: url('/glyphs/kin_sun_inv.png');
+}
+.vmenu__glyph--carving {
+  --glyph-mask: url('/glyphs/ibach_inv.png');
+}
