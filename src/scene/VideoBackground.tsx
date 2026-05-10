@@ -4,6 +4,7 @@ import { REGIONS } from './regions'
 import './VideoBackground.css'
 
 const VIDEO_SRC = '/liminalbg-dither.mp4'
+const POSTER_SRC = '/liminalbg-poster.jpg'
 
 /**
  * DOM-based video background. Sits behind the transparent WebGL canvas in a
@@ -22,6 +23,16 @@ export function VideoBackground() {
   useEffect(() => {
     const v = videoRef.current
     if (!v) return
+
+    v.defaultMuted = true
+    v.muted = true
+    v.playsInline = true
+    v.controls = false
+    v.setAttribute('muted', '')
+    v.setAttribute('playsinline', '')
+    v.setAttribute('webkit-playsinline', '')
+    v.setAttribute('x-webkit-airplay', 'deny')
+
     const tryPlay = () => {
       void v.play()?.catch(() => {})
     }
@@ -45,19 +56,26 @@ export function VideoBackground() {
 
   return (
     <>
+      <div className="bg-video-poster" aria-hidden="true" />
       <video
         ref={videoRef}
         className="bg-video"
         src={VIDEO_SRC}
+        poster={POSTER_SRC}
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
-        controls={false}
         controlsList="nodownload nofullscreen noremoteplayback"
         disablePictureInPicture
         disableRemotePlayback
+        onPlaying={(event) => {
+          event.currentTarget.dataset.playing = 'true'
+        }}
+        onPause={(event) => {
+          delete event.currentTarget.dataset.playing
+        }}
         aria-hidden="true"
       />
       <div className="bg-dither" aria-hidden="true" />

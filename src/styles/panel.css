@@ -1087,7 +1087,7 @@
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 820px) {
   .about-profile {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -1102,6 +1102,13 @@
     justify-content: center;
     text-align: center;
   }
+
+  .about-profile__headline {
+    max-width: 12ch;
+  }
+}
+
+@media (max-width: 420px) {
 
   .about-switcher {
     gap: 4px;
@@ -2947,6 +2954,36 @@
   }
 }
 
+@media (max-height: 820px) and (max-width: 1400px) and (min-width: 901px) {
+  .project-detail-topper {
+    padding: 10px 13px;
+  }
+
+  .project-detail-topper .project-detail__title {
+    font-size: clamp(22px, 3.8vw, 30px);
+    line-height: 1.02;
+  }
+
+  .project-detail__overview {
+    grid-template-columns: 1fr;
+  }
+
+  .project-detail__hero {
+    height: clamp(128px, 22vh, 180px);
+    aspect-ratio: auto;
+  }
+
+  .project-detail__section {
+    padding: 12px 13px 13px;
+  }
+
+  .project-detail__summary,
+  .project-detail__section p {
+    font-size: 13px;
+    line-height: 1.48;
+  }
+}
+
 /* Art desktop archive. */
 .art-body {
   position: relative;
@@ -3811,17 +3848,19 @@
   .art-desktop {
     height: calc(58dvh - 118px);
     min-height: 300px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
   }
 
   .art-desktop__icons {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px 6px;
-    padding: 14px 10px 54px;
+    max-height: calc(100% - 40px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 14px 10px 10px;
+    -webkit-overflow-scrolling: touch;
   }
 
   .art-folder {
@@ -3886,6 +3925,10 @@
     height: auto;
   }
 
+  .art-window--folder {
+    grid-template-rows: 28px minmax(0, 1fr);
+  }
+
   .art-window--viewer {
     inset: 10px 10px 50px;
     width: auto;
@@ -3896,12 +3939,70 @@
   .art-window__titlebar {
     grid-template-columns: minmax(0, 1fr) auto;
   }
+
+  .art-window--folder .art-window__files {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px 4px;
+    padding: 7px 6px;
+  }
+
+  .art-window--folder .art-file {
+    gap: 3px;
+    padding: 3px 2px;
+  }
+
+  .art-window--folder .art-file__thumb,
+  .art-window--folder .art-file__generic {
+    width: 46px;
+    height: 40px;
+  }
+
+  .art-window--folder .art-file__name {
+    font-size: 8px;
+    line-height: 1.08;
+  }
+
+  .art-window--folder .art-notes {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .art-window--folder {
+    grid-template-rows: 28px minmax(0, 1fr);
+  }
+
+  .art-window--folder .art-window__files {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px 4px;
+    padding: 7px 6px;
+  }
+
+  .art-window--folder .art-file {
+    gap: 3px;
+    padding: 3px 2px;
+  }
+
+  .art-window--folder .art-file__thumb,
+  .art-window--folder .art-file__generic {
+    width: 46px;
+    height: 40px;
+  }
+
+  .art-window--folder .art-file__name {
+    font-size: 8px;
+    line-height: 1.08;
+  }
+
+  .art-window--folder .art-notes {
+    display: none;
+  }
 }
 
 @media (max-width: 460px) and (max-height: 700px) {
   .art-desktop__icons {
     gap: 2px 4px;
-    padding: 8px 8px 42px;
+    padding: 8px;
   }
 
   .art-folder {

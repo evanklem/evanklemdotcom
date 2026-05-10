@@ -5,7 +5,8 @@
 
    Layered with the canvas so the 3D models render on top. */
 
-.bg-video {
+.bg-video,
+.bg-video-poster {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,9 +15,24 @@
   object-fit: cover;
   z-index: 0;
   pointer-events: none;
+}
+
+.bg-video-poster {
+  background: url('/liminalbg-poster.jpg') center / cover no-repeat;
+  transform: scale(1.01);
+  filter: contrast(1.08) saturate(0.84);
+}
+
+.bg-video {
   transform: scale(1.01);
   image-rendering: auto;
   filter: contrast(1.08) saturate(0.84);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.bg-video[data-playing='true'] {
+  opacity: 1;
 }
 
 /* Subtle CRT texture over the baked-dither video. The actual palette
