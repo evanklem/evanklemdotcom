@@ -574,6 +574,18 @@ export function SectionPanel() {
     }
   }, [activeRegion])
 
+  useEffect(() => {
+    PROJECTS.forEach((project) => {
+      const sources = [project.cloud, project.glyph]
+
+      sources.forEach((src) => {
+        const image = new Image()
+        image.decoding = 'async'
+        image.src = src
+      })
+    })
+  }, [])
+
   const closeButton = (
     <button
       type="button"
@@ -1069,7 +1081,13 @@ function ProjectTile({ project, onSelect }: { project: Project; onSelect: () => 
   return (
     <button type="button" className="project-tile" onClick={onSelect} data-interactive>
       <span className="project-tile__media" aria-hidden="true">
-        <img className="project-tile__cloud" src={project.cloud} alt="" />
+        <img
+          className="project-tile__cloud"
+          src={project.cloud}
+          alt=""
+          loading="eager"
+          decoding="async"
+        />
         <span
           className="project-tile__glyph"
           style={{ ['--project-glyph' as string]: `url('${project.glyph}')` }}
@@ -1117,7 +1135,13 @@ function ProjectDetail({
     <article className="project-detail" aria-labelledby={`project-${project.id}-title`}>
       <div className="project-detail__overview">
         <div className="project-detail__hero" aria-hidden="true">
-          <img className="project-detail__cloud" src={project.cloud} alt="" />
+          <img
+            className="project-detail__cloud"
+            src={project.cloud}
+            alt=""
+            loading="eager"
+            decoding="async"
+          />
           <span
             className="project-detail__glyph"
             style={{ ['--project-glyph' as string]: `url('${project.glyph}')` }}

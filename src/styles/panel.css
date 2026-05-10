@@ -1088,11 +1088,6 @@
 }
 
 @media (max-width: 420px) {
-  .panel {
-    height: 66dvh;
-    max-height: 66dvh;
-  }
-
   .about-profile {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -1141,14 +1136,6 @@
 
   .about-action {
     min-height: 36px;
-  }
-
-}
-
-@media (max-width: 360px) {
-  .panel {
-    height: 72dvh;
-    max-height: 72dvh;
   }
 }
 
@@ -3824,7 +3811,10 @@
   .art-desktop {
     height: calc(58dvh - 118px);
     min-height: 300px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .art-desktop__icons {
@@ -3905,6 +3895,48 @@
 
   .art-window__titlebar {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+}
+
+@media (max-width: 460px) and (max-height: 700px) {
+  .art-desktop__icons {
+    gap: 2px 4px;
+    padding: 8px 8px 42px;
+  }
+
+  .art-folder {
+    gap: 2px;
+    min-height: 48px;
+    padding: 1px 3px;
+  }
+
+  .art-folder__icon {
+    width: 32px;
+    height: 27px;
+    margin-top: 0;
+  }
+
+  .art-folder[data-icon='recycle'] .art-folder__icon {
+    width: 30px;
+    height: 32px;
+  }
+
+  .art-folder__label {
+    font-size: 9px;
+    line-height: 1.05;
+  }
+
+  .art-taskbar {
+    min-height: 30px;
+    padding: 2px 8px;
+  }
+
+  .art-taskbar__start {
+    min-height: 24px;
+  }
+
+  .art-taskbar__status {
+    padding-block: 3px;
   }
 }
 
