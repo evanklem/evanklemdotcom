@@ -1184,6 +1184,35 @@
 }
 
 @media (max-width: 560px) {
+  .about-body {
+    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-rows: 64px auto auto;
+  }
+
+  .about-topbar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .about-readout {
+    min-height: 58px;
+    padding: 8px;
+  }
+
+  .about-switcher {
+    gap: 6px;
+  }
+
+  .about-switcher__button {
+    min-height: 42px;
+    padding: 0 8px 0 12px;
+  }
+
+  .about-switcher__label {
+    font-size: clamp(9px, 2.2vw, 11px);
+    letter-spacing: 0.04em;
+  }
+
   .about-profile {
     grid-template-columns: 1fr;
     justify-items: center;
@@ -1205,53 +1234,42 @@
 
   .about-profile[data-about-mode='work'],
   .about-profile[data-about-mode='setup'] {
-    grid-template-columns: minmax(88px, 32%) minmax(0, 1fr);
-    justify-items: stretch;
-    text-align: left;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
     padding-block: 12px;
   }
 
   .about-profile[data-about-mode='work'] .about-profile__media,
   .about-profile[data-about-mode='setup'] .about-profile__media {
     display: block;
-    width: 100%;
-    max-width: 128px;
-    align-self: start;
+    width: min(100%, 136px);
+    max-width: 136px;
+    align-self: center;
   }
 
   .about-profile[data-about-mode='work'] .about-profile__copy,
   .about-profile[data-about-mode='setup'] .about-profile__copy {
-    justify-items: start;
+    justify-items: center;
   }
 
   .about-profile[data-about-mode='work'] .about-profile__eyebrow,
   .about-profile[data-about-mode='setup'] .about-profile__eyebrow {
-    justify-content: flex-start;
-    text-align: left;
+    justify-content: center;
+    text-align: center;
   }
 
   .about-profile[data-about-mode='work'] .about-profile__headline,
   .about-profile[data-about-mode='setup'] .about-profile__headline {
-    max-width: none;
+    max-width: 12ch;
   }
 }
 
 @media (max-width: 420px) {
-
-  .about-switcher {
-    gap: 4px;
-  }
-
-  .about-switcher__button {
-    justify-content: center;
-    min-height: 42px;
-    padding: 0 8px;
-  }
-
   .about-switcher__label {
     flex: 0 1 auto;
-    font-size: 9px;
-    letter-spacing: 0.06em;
+    font-size: clamp(8px, 2.1vw, 9px);
+    letter-spacing: 0.035em;
     text-align: center;
   }
 
@@ -4055,7 +4073,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 14px 10px 10px;
+    padding: 14px 10px 54px;
     -webkit-overflow-scrolling: touch;
   }
 

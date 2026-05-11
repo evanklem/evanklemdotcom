@@ -39,6 +39,7 @@ const COLOR_CYCLE_PERIOD_S = 24
 const AUTO_SPIN_RATE = 0.18
 const OPEN_LERP_TAU = 0.18 // snappy open
 const HALF_AT_REST_EPS = 0.0001
+const CSS_COLOR_UPDATE_MIN_WIDTH = 1181
 
 // Per-region accent colors precomputed once instead of allocated per frame.
 const REGION_COLORS = new Map<string, Color>(
@@ -274,10 +275,10 @@ export function Vase({ onReady }: VaseProps) {
       tintU.z += (_targetColor.b - tintU.z) * 0.06
     }
     const currentTint = matsRef.current[0]?.uniforms.uTint.value as Vector3 | undefined
-    // The cycling CSS color only drives the desktop logo. On compact layouts
-    // that logo is hidden, so writing the root CSS var just forces mobile
-    // WebViews to restyle masked UI over the constantly repainting WebGL layer.
-    if (currentTint && !compact) {
+    // The cycling CSS color only drives the desktop logo. On compact/tablet
+    // touch layouts, root writes force mobile WebViews to restyle masked UI
+    // over the constantly repainting WebGL layer.
+    if (currentTint && size.width >= CSS_COLOR_UPDATE_MIN_WIDTH) {
       const r = Math.round(currentTint.x * 255)
       const g = Math.round(currentTint.y * 255)
       const b = Math.round(currentTint.z * 255)

@@ -256,6 +256,25 @@
   }
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .vmenu__glyph,
+  .vmenu__btn:hover .vmenu__glyph,
+  .vmenu__item--active .vmenu__glyph {
+    filter: none;
+    will-change: auto;
+  }
+
+  .vmenu__glyph::before {
+    display: none;
+  }
+
+  .vmenu__glyph::after,
+  .vmenu__btn:hover .vmenu__glyph::after,
+  .vmenu__item--active .vmenu__glyph::after {
+    filter: none;
+  }
+}
+
 /* PILL — memory-card-slot tab. Layered fill:
    - solid dark base
    - bevel highlight on top edge, shadow on bottom (flat colors, no real lighting)
