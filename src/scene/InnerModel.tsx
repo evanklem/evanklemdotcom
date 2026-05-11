@@ -34,14 +34,12 @@ const PER_SECTION_SCALE: Record<SectionId, number> = {
   about: 0.88,
   projects: 1.06,
   art: 1.0,
-  aquarium: 0.78,
 }
 
 const ORIGINAL_MODEL_BOUNDS: Record<SectionId, { max: number; center: Vector3 }> = {
   about: { max: 0.0844, center: new Vector3(-0.1897, 0.043, 0.0002) },
   projects: { max: 0.2055, center: new Vector3(0.0009, -0.0028, 0.0024) },
   art: { max: 1.8126, center: new Vector3(0.0078, 0.5595, -0.0479) },
-  aquarium: { max: 0.0627, center: new Vector3(-0.0024, -0.0005, -0.0009) },
 }
 
 interface ModelGltf extends GLTF {

@@ -2,21 +2,18 @@ import { useEffect, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { REGIONS } from './regions'
 import { useNavState } from './navContext'
-import { AquariumPanelBody } from './aquarium/AquariumPanelBody'
 import '../styles/panel.css'
 
 const TITLES: Record<string, string> = {
   about: 'About',
   projects: 'Projects',
   art: 'Art',
-  aquarium: 'Aquarium',
 }
 
 const GLYPHS: Record<string, string> = {
   about: 'water',
   projects: 'fire',
   art: 'carving',
-  aquarium: 'sun',
 }
 
 const LOREM =
@@ -69,18 +66,18 @@ const ABOUT_MODES: Record<
     alt: 'Portrait of Evan Ramirez-Klem',
     headline: 'Full-stack engineer.',
     intro:
-      'I build web apps end to end with React, TypeScript, PostgreSQL, and AI-native workflows. Looking for full-time work and open to relocation.',
+      'I build web apps end to end with React, TypeScript, PostgreSQL, and AI workflow tools. I was the sole developer on a pre-seed creator platform and I’m looking for full-time work.',
   },
   work: {
-    label: 'Work',
+    label: 'Experience',
     image: '/content/about/project-dither.gif',
     alt: 'Animated project interface preview representing Evan’s product work',
     headline: 'Product, interface, systems.',
     intro:
-      'I led development for a pre-seed agentic AI product, shipping full-stack features from user-facing flows to backend systems.',
+      'I was the sole developer on a pre-seed AI creator platform, building customer flows, talent dashboards, admin tools, email systems, and billing.',
   },
   setup: {
-    label: 'Setup',
+    label: 'Workflow',
     image: '/content/about/computerrv.png',
     alt: 'RGB-lit computer setup running Evan’s Linux environment',
     headline: 'Omarchy, JetBrains, Claude Code.',
@@ -283,6 +280,7 @@ type Project = {
   meta: string
   tileLine: string
   summary: string
+  quickRead?: string
   cloud: string
   glyph: string
   screenshots?: Array<{
@@ -319,9 +317,11 @@ const PROJECTS: Project[] = [
     name: 'Ephemera Web Platform',
     category: 'Creator Platform',
     meta: 'Product / Backend',
-    tileLine: 'Transaction layer between talent, customers, and brands.',
+    tileLine: 'Transaction layer for creator deals with checkout, dashboards, admin tools, email systems, and billing.',
     summary:
       'A platform where customers commission custom videos, personal messages, and signed autographs directly from talent. It runs each order end to end and gives talent a dashboard built around the AI agent and the email infrastructure it rides on.',
+    quickRead:
+      'Ephemera was a pre-seed creator platform built as a transaction hub between creators, brands, and fans. It combined AI-assisted brand-deal tooling with fan-facing offerings like custom videos, personal messages, and signed autographs. I was the sole developer, and the product reached talent testing and investor demos before the company shut down after failing to raise enough capital.',
     cloud: '/content/projects/clouds/cloud-tile-00.png',
     glyph: '/glyphs/projects/naah_house_inv.png',
     screenshots: [
@@ -362,11 +362,11 @@ const PROJECTS: Project[] = [
     sections: [
       {
         title: 'Overview',
-        body: 'Ephemera was a pre-seed creator platform that did not raise enough capital to continue. The product was a transaction layer for buying custom content directly from talent. Customers could commission a video, a personal message, or a signed autograph from a creator they followed. We worked with around a dozen onboarded talent accounts and another dozen investor demo accounts while testing the product.',
+        body: 'Ephemera was a pre-seed creator platform for buying custom content and handling brand work directly with talent. Customers could commission videos, personal messages, or signed autographs, while talent managed requests and inbox activity from a dashboard. The product reached talent testing and investor demos before the company shut down after failing to raise enough capital.',
       },
       {
         title: 'Built',
-        body: 'I worked across the monorepo end to end. The customer side was the purchase and checkout flow. On the talent side I built the dashboard, which paired order tracking with AI-agent integration and settings for connected email accounts. Behind the UI I built the email pipeline that pulled inbound mail to talent inboxes and pushed outbound for both the agent and platform comms. I also built admin tools for support, investor demos, and operational review.',
+        body: 'As the sole developer, I owned the product surface across customer checkout, talent dashboards, admin tooling, connected inbox settings, order state, auth boundaries, and Stripe billing. The platform supported around a dozen onboarded talent accounts plus investor demo accounts, so the work had to hold up across public flows, internal operations, and live product reviews.',
       },
       {
         title: 'Stack',
@@ -379,9 +379,11 @@ const PROJECTS: Project[] = [
     name: 'Ephemera AI Talent Agent',
     category: 'AI Workflow',
     meta: 'LLM / Email',
-    tileLine: 'AI deal agent for creator inboxes.',
+    tileLine: 'Agentic work pipeline for creator brand deals, from inbox detection to drafted replies and invoicing.',
     summary:
-      'An AI inbox workflow that detects brand deals, extracts terms, checks creator rules, and drafts replies for approval.',
+      'An agentic work pipeline that detects brand deals, extracts terms, checks creator rules, and moves replies through approval.',
+    quickRead:
+      'Ephemera AI Talent Agent was an agentic work pipeline for creator brand deals. It turned messy inbound email threads into structured deal work by identifying opportunities, extracting terms, checking creator rules, and preparing replies for review or authorized auto-send.',
     cloud: '/content/projects/clouds/cloud-tile-01.png',
     glyph: '/glyphs/projects/il_see_inv.png',
     screenshots: [
@@ -409,15 +411,15 @@ const PROJECTS: Project[] = [
     sections: [
       {
         title: 'Overview',
-        body: 'Ephemera AI Talent Agent is a deal workflow for creator inboxes. It was built for the same pre-seed product and tested against feedback from onboarded talent accounts. It watches connected email accounts, identifies brand opportunities, extracts deal terms, checks creator rules, drafts replies, and routes sensitive actions through approval.',
+        body: 'Ephemera AI Talent Agent is an agentic work pipeline for creator inboxes, built for the same pre-seed product and tested against feedback from onboarded talent accounts. Its job was to move brand opportunities through a structured sequence of detection, analysis, rule checks, drafting, and approval without giving the model unchecked control over sensitive actions.',
       },
       {
         title: 'Built',
-        body: 'I built the agent pipeline end to end. On the inbound side it connects to talent inboxes over OAuth and listens for new mail through provider webhooks. Workers pull each thread, skip duplicates and self-sent replies, then classify whether it is a likely deal before running the email through structured analysis with Claude. On the outbound side the agent drafts a response on the original thread. It can send that draft itself when the talent has authorized auto-send, otherwise it queues the draft for the talent to review. Once a deal closes the same pipeline tracks deliverables and issues the Stripe invoice.',
+        body: 'I built the agent pipeline across OAuth inbox connection, provider webhooks, worker processing, Claude analysis, approval routing, outbound replies, deliverable tracking, and Stripe invoicing. Workers skipped duplicate and self-sent mail, while the model handled extraction and normal code enforced creator rules, send permissions, and approval boundaries.',
       },
       {
         title: 'Workflow',
-        body: 'A new email triggers a worker to fetch the thread and decide whether it is a brand inquiry. If it is, Claude pulls the proposed terms out of the message and checks them against the creator’s standing rules. When the brand has left something missing the agent replies on the same thread to fill in the gap. Once the terms are complete the agent prepares the response. It either sends that response on its own when the talent has authorized auto-send, or queues it for the talent to review.',
+        body: 'A new email triggers a worker to fetch the thread and decide whether it is a brand inquiry. If it is, Claude pulls the proposed terms out of the message and checks them against the creator’s standing rules. The model handles classification and term extraction, while rules like minimum pay, excluded brands, and approval requirements stay in normal code instead of being left to the model. When the brand has left something missing the agent replies on the same thread to fill in the gap. Once the terms are complete the agent prepares the response. It either sends that response on its own when the talent has authorized auto-send, or queues it for the talent to review.',
       },
       {
         title: 'Stack',
@@ -430,7 +432,7 @@ const PROJECTS: Project[] = [
     name: 'Evanflow',
     category: 'Open Source',
     meta: 'Agents / TDD',
-    tileLine: 'Claude Code plugin and workflow.',
+    tileLine: 'Open-source Claude Code workflow with nearly 400 GitHub stars.',
     summary: 'An open-source Claude Code workflow for planning, test-first implementation, review, and iteration.',
     cloud: '/content/projects/clouds/cloud-tile-02.png',
     glyph: '/glyphs/projects/bih_road_inv.png',
@@ -510,7 +512,7 @@ const PROJECTS: Project[] = [
     sections: [
       {
         title: 'Overview',
-        body: 'AI Fraud Detection System is a Python machine learning pipeline for classifying credit card fraud from 284,807 transactions where fraudulent samples make up less than 1 percent of the dataset.',
+        body: 'AI Fraud Detection System is a Python machine learning pipeline for classifying credit card fraud from 284,807 transactions where fraudulent samples make up less than 1 percent of the dataset. In project evaluation, the tuned model reached up to a 0.88 F1 score, a metric that balances catching fraud with avoiding false alarms.',
       },
       {
         title: 'Built',
@@ -518,7 +520,7 @@ const PROJECTS: Project[] = [
       },
       {
         title: 'Evaluation',
-        body: 'With fraud under one percent of the data, accuracy is the wrong headline metric. I evaluated each model on what actually catches the rare class: precision and recall on the fraud cases, F1, the confusion matrix, and AUPRC. Splits are stratified so the train and test sets carry the same fraud ratio as the original data, and 5-fold cross-validation runs on top so the score averages across several slices of the data instead of one lucky split.',
+        body: 'With fraud under one percent of the data, a model can look accurate while still missing the thing it is supposed to catch. I evaluated each model on what actually catches the rare class: precision and recall on fraud cases, F1, the confusion matrix, and AUPRC. Splits are stratified so the train and test sets carry the same fraud ratio as the original data, and 5-fold cross-validation runs on top so the score averages across several slices of the data instead of one lucky split.',
       },
       {
         title: 'Stack',
@@ -531,19 +533,19 @@ const PROJECTS: Project[] = [
     name: 'evanklem.com',
     category: 'Portfolio System',
     meta: 'React / Three.js',
-    tileLine: 'This site, built as the product.',
+    tileLine: 'Interactive portfolio with persistent WebGL, responsive panels, and custom media systems.',
     summary:
-      'A hand-built portfolio with a persistent WebGL scene, museum-scanned Maya artifacts, real glyph references, responsive panels, and an XP-style art browser.',
+      'A hand-built portfolio that treats the site itself as the product: a live 3D scene, section-specific interfaces, museum-scanned artifacts, and a custom archive for project and art content.',
     cloud: '/content/projects/clouds/cloud-tile-05.png',
     glyph: '/glyphs/projects/tzihb_write_inv.png',
     sections: [
       {
         title: 'Overview',
-        body: 'This site is a custom React and Three.js portfolio built around a persistent canvas instead of a static page. The models are real Maya artifacts scanned by museums, and the project glyphs are real glyph references. The interface mixes modern web layout with early tech UI I like: original Xbox-style menus, PS2-era system screens, and an XP-style art archive.',
+        body: 'evanklem.com is a custom React and Three.js portfolio built around a live WebGL scene instead of a static page. The visual system uses museum-scanned Maya artifacts, real glyph references, and interface patterns from early console and desktop software without turning the content into a gimmick.',
       },
       {
         title: 'Built',
-        body: 'I built the scene, navigation, panel system, project browser, art viewer, mobile states, and asset pipeline. The 3D layer stays mounted while sections open and close, so the model animation and background stay intact while the content changes over it.',
+        body: 'I built the scene architecture, navigation, responsive panel system, project browser, art archive, mobile states, and asset pipeline. The 3D layer stays mounted while sections open and close, which keeps the animation, background, and section transitions feeling like one continuous product.',
       },
       {
         title: 'Stack',
@@ -563,8 +565,7 @@ export function SectionPanel() {
   const isAbout = region?.id === 'about'
   const isProjects = region?.id === 'projects'
   const isArt = region?.id === 'art'
-  const isAquarium = region?.id === 'aquarium'
-  const usesPanelBack = isAbout || isProjects || isArt || isAquarium
+  const usesPanelBack = isAbout || isProjects || isArt
 
   useEffect(() => {
     if (activeRegion) {
@@ -628,7 +629,7 @@ export function SectionPanel() {
       )}
 
       <div className="panel__inner">
-        {!isAbout && !isProjects && !isArt && !isAquarium && (
+        {!isAbout && !isProjects && !isArt && (
           <>
             <h2 className="panel__title" data-text={region ? TITLES[region.id] : ''}>
               {region ? TITLES[region.id] : ''}
@@ -642,8 +643,6 @@ export function SectionPanel() {
           <ProjectsPanelBody closeButton={closeButton} />
         ) : isArt ? (
           <ArtPanelBody closeButton={closeButton} />
-        ) : isAquarium ? (
-          <AquariumPanelBody closeButton={closeButton} />
         ) : (
           <p className="panel__body">{LOREM}</p>
         )}
@@ -1148,30 +1147,40 @@ function ProjectDetail({
           />
         </div>
 
-        <section
-          className="project-detail__section project-detail__section--lead"
-          aria-labelledby={`project-${project.id}-overview`}
-        >
-          <h4 id={`project-${project.id}-overview`}>Overview</h4>
-          {overview && <p>{overview}</p>}
-          {built && <p>{built}</p>}
-          {project.links && project.links.length > 0 && (
-            <div className="project-detail__inline-links" aria-label={`${project.name} links`}>
-              {project.links.map((link) => (
-                <a
-                  key={link.href}
-                  className="project-link"
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  data-interactive
-                >
-                  {link.label} →
-                </a>
-              ))}
-            </div>
+        <div className="project-detail__copy">
+          {project.quickRead && (
+            <aside className="project-detail__quick" aria-label={`${project.name} quick read`}>
+              <span>Overview</span>
+              <p>{project.quickRead}</p>
+            </aside>
           )}
-        </section>
+          <section
+            className="project-detail__section project-detail__section--lead"
+            aria-labelledby={`project-${project.id}-overview`}
+          >
+            <h4 id={`project-${project.id}-overview`}>
+              {project.quickRead ? 'Scope & Implementation' : 'Overview'}
+            </h4>
+            {!project.quickRead && overview && <p>{overview}</p>}
+            {built && <p>{built}</p>}
+            {project.links && project.links.length > 0 && (
+              <div className="project-detail__inline-links" aria-label={`${project.name} links`}>
+                {project.links.map((link) => (
+                  <a
+                    key={link.href}
+                    className="project-link"
+                    href={link.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-interactive
+                  >
+                    {link.label} →
+                  </a>
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
       </div>
 
       {project.diagram && <ProjectDiagram project={project} />}
@@ -1438,6 +1447,7 @@ function AboutPanelBody({ closeButton }: { closeButton: ReactNode }) {
           key={`about-profile-${activeMode}`}
           className="about-profile"
           aria-labelledby="about-profile-name"
+          data-about-mode={activeMode}
         >
           <div className="about-profile__media">
             <img key={mode.image} className="about-profile__image" src={mode.image} alt={mode.alt} />
@@ -1462,7 +1472,7 @@ function AboutPanelBody({ closeButton }: { closeButton: ReactNode }) {
                 rel="noreferrer"
                 data-interactive
               >
-                Open Resume
+                Resume
               </a>
               <a
                 className="about-action"
@@ -1509,14 +1519,14 @@ function AboutModeContent({ activeMode }: { activeMode: AboutMode }) {
             Overview
           </h4>
           <p>
-            My background includes leading development at an early-stage agentic AI startup, where
-            I learned how to turn uncertain product ideas into working software without losing
-            sight of the user experience.
+            My background includes leading development at an early-stage AI startup, where I turned
+            founder direction and talent feedback into working software used by onboarded talent,
+            investor demo accounts, and the founding team.
           </p>
           <p>
-            I’m most interested in product work where fast iteration and AI-native workflows are
-            part of the engineering culture. That leverage lets me focus on architecture, design,
-            and the systems underneath the interface.
+            I’m not too fussy about the shape of the work. I’m happy moving between UI, backend
+            details, cleanup, edge cases, business rules, and feedback rounds. Give me enough
+            context, time, and feedback, and I can build great software.
           </p>
           <p>
             Outside of work, I’m into Linux, customizing my setup, creative software, and games.
@@ -1555,10 +1565,10 @@ function AboutModeContent({ activeMode }: { activeMode: AboutMode }) {
             Experience
           </h4>
           <p>
-            At Ephemera, I worked as the sole developer on an early-stage AI product, turning
-            founder direction and direct beta-user feedback into demos, admin tools, product flows,
-            and backend systems. I regularly prepared working features for cofounder reviews,
-            investor pitches, and user conversations on tight timelines.
+            At Ephemera, I executed the coding work needed across the platform during my tenure as
+            the sole developer on a pre-seed AI product. I built demos, admin tools, product flows,
+            backend systems, email infrastructure, and billing pieces so the product was ready for
+            users, investors, and cofounder reviews during short, hard sprints.
           </p>
           <p>
             Before that, I evaluated AI outputs on Java and computer-science problems for Uber AI
@@ -1574,13 +1584,14 @@ function AboutModeContent({ activeMode }: { activeMode: AboutMode }) {
     <div className="about-grid about-grid--single">
       <section className="about-card about-card--wide" aria-labelledby="about-setup-title">
         <h4 id="about-setup-title" className="about-card__title">
-          Setup / Workflow
+          Workflow
         </h4>
         <p>
-          Omarchy gives me a Linux desktop that feels fast without hiding the system from me. I like
-          being able to inspect my setup, change what I need, and make the machine feel like mine.
-          JetBrains is my main IDE because its Linux support is solid, and I like how dependable it
-          feels on larger TypeScript projects.
+          I like Linux because open source matters to me, and the workflow feels better once you
+          get it set up. Hyprland lets me use a keyboard-driven desktop that feels fast and
+          personal. JetBrains is my IDE because its Linux support is solid. Claude Code is my daily
+          driver. I use agentic coding a lot, and I’m very comfortable building with it. It has
+          become my favorite way to work.
         </p>
         <p>
           I also built Evanflow, an open-source Claude Code workflow system that grew out of my

@@ -1,4 +1,4 @@
-export type SectionId = 'about' | 'projects' | 'art' | 'aquarium'
+export type SectionId = 'about' | 'projects' | 'art'
 
 export interface Region {
   readonly id: SectionId

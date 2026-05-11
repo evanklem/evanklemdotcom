@@ -34,14 +34,23 @@ export function VideoBackground() {
     v.setAttribute('x-webkit-airplay', 'deny')
 
     const tryPlay = () => {
-      void v.play()?.catch(() => {})
+      if (!v.paused && !v.ended) return
+      void Promise.resolve(v.play()).catch(() => {})
     }
     tryPlay()
-    window.addEventListener('pointerdown', tryPlay)
+    window.addEventListener('touchend', tryPlay, { passive: true })
+    window.addEventListener('click', tryPlay)
     window.addEventListener('keydown', tryPlay)
+    window.addEventListener('pageshow', tryPlay)
+    v.addEventListener('loadedmetadata', tryPlay)
+    v.addEventListener('canplay', tryPlay)
     return () => {
-      window.removeEventListener('pointerdown', tryPlay)
+      window.removeEventListener('touchend', tryPlay)
+      window.removeEventListener('click', tryPlay)
       window.removeEventListener('keydown', tryPlay)
+      window.removeEventListener('pageshow', tryPlay)
+      v.removeEventListener('loadedmetadata', tryPlay)
+      v.removeEventListener('canplay', tryPlay)
     }
   }, [])
 
@@ -60,7 +69,6 @@ export function VideoBackground() {
       <video
         ref={videoRef}
         className="bg-video"
-        src={VIDEO_SRC}
         poster={POSTER_SRC}
         autoPlay
         loop
@@ -77,7 +85,9 @@ export function VideoBackground() {
           delete event.currentTarget.dataset.playing
         }}
         aria-hidden="true"
-      />
+      >
+        <source src={VIDEO_SRC} type="video/mp4" />
+      </video>
       <div className="bg-dither" aria-hidden="true" />
       <div ref={tintRef} className="bg-tint" aria-hidden="true" />
     </>

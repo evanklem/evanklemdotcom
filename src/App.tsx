@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Scene } from './scene/Scene'
 import { NavProvider } from './scene/NavProvider'
-import { SectionPanel } from './scene/SectionPanel'
 import { VideoBackground } from './scene/VideoBackground'
 import { VerticalMenu } from './scene/VerticalMenu'
 import { BootSequence } from './scene/BootSequence'
 import { Cursor } from './scene/Cursor'
+
+const SectionPanel = lazy(() =>
+  import('./scene/SectionPanel').then((module) => ({ default: module.SectionPanel })),
+)
 
 function App() {
   const [booted, setBooted] = useState(false)
@@ -16,7 +19,9 @@ function App() {
       <VideoBackground />
       <Scene onVaseReady={() => setVaseReady(true)} />
       <VerticalMenu />
-      <SectionPanel />
+      <Suspense fallback={null}>
+        <SectionPanel />
+      </Suspense>
       <div className="grain" aria-hidden="true" />
       <Cursor />
       {!booted && <BootSequence ready={vaseReady} onComplete={() => setBooted(true)} />}

@@ -232,6 +232,27 @@
   .vmenu__glyph {
     width: clamp(48px, 15vw, 64px);
     height: clamp(48px, 15vw, 64px);
+    filter: none;
+    transform: translateZ(0);
+    will-change: auto;
+  }
+
+  .vmenu__glyph::before {
+    display: none;
+  }
+
+  .vmenu__glyph::after {
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent, #c4ff00) 62%, transparent));
+  }
+
+  .vmenu__btn:hover .vmenu__glyph,
+  .vmenu__item--active .vmenu__glyph {
+    filter: none;
+  }
+
+  .vmenu__btn:hover .vmenu__glyph::after,
+  .vmenu__item--active .vmenu__glyph::after {
+    filter: drop-shadow(0 0 10px color-mix(in srgb, var(--accent, #c4ff00) 76%, transparent));
   }
 }
 

@@ -6,14 +6,12 @@ const SECTION_LABELS: Record<string, string> = {
   about: 'ABOUT',
   projects: 'PROJECTS',
   art: 'ART',
-  aquarium: 'AQUARIUM',
 }
 
 const SECTION_GLYPHS: Record<string, string> = {
   about: 'water',
   projects: 'fire',
   art: 'carving',
-  aquarium: 'sun',
 }
 
 /**
