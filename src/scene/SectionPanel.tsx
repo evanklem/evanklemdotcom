@@ -1559,7 +1559,7 @@ function AboutModeContent({ activeMode }: { activeMode: AboutMode }) {
           </h4>
           <p>
             My background includes leading development at an early-stage AI startup, where I turned
-            founder direction and talent feedback into working software used by onboarded talent,
+            founder direction and talent feedback into working software used by onboarded users,
             investor demo accounts, and the founding team.
           </p>
           <p>
