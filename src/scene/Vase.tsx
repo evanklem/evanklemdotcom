@@ -274,7 +274,10 @@ export function Vase({ onReady }: VaseProps) {
       tintU.z += (_targetColor.b - tintU.z) * 0.06
     }
     const currentTint = matsRef.current[0]?.uniforms.uTint.value as Vector3 | undefined
-    if (currentTint) {
+    // The cycling CSS color only drives the desktop logo. On compact layouts
+    // that logo is hidden, so writing the root CSS var just forces mobile
+    // WebViews to restyle masked UI over the constantly repainting WebGL layer.
+    if (currentTint && !compact) {
       const r = Math.round(currentTint.x * 255)
       const g = Math.round(currentTint.y * 255)
       const b = Math.round(currentTint.z * 255)

@@ -6,7 +6,6 @@ import { Vase } from './Vase'
 import { InnerModel } from './InnerModel'
 import { REGIONS } from './regions'
 import { psxRegistry } from './psxMaterial'
-import { useNavState } from './navContext'
 
 // Push viewport size to PSX materials only when the canvas size changes.
 function ViewportSync() {
@@ -25,13 +24,20 @@ function ViewportSync() {
 // comes out of the vase."
 function ShaderWarmup() {
   const { gl, scene, camera } = useThree()
-  const { activeRegion } = useNavState()
   useEffect(() => {
-    const id = requestAnimationFrame(() => {
+    const id = window.setTimeout(() => {
+      const visibility = new Map()
+      scene.traverse((obj) => {
+        visibility.set(obj, obj.visible)
+        obj.visible = true
+      })
       gl.compile(scene, camera)
-    })
-    return () => cancelAnimationFrame(id)
-  }, [activeRegion, gl, scene, camera])
+      scene.traverse((obj) => {
+        obj.visible = visibility.get(obj) ?? obj.visible
+      })
+    }, 650)
+    return () => window.clearTimeout(id)
+  }, [gl, scene, camera])
   return null
 }
 

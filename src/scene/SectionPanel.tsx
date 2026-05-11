@@ -640,7 +640,7 @@ export function SectionPanel() {
         {isAbout ? (
           <AboutPanelBody closeButton={closeButton} />
         ) : isProjects ? (
-          <ProjectsPanelBody closeButton={closeButton} />
+          <ProjectsPanelBody closeButton={closeButton} panelOpen={open} />
         ) : isArt ? (
           <ArtPanelBody closeButton={closeButton} />
         ) : (
@@ -651,10 +651,47 @@ export function SectionPanel() {
   )
 }
 
-function ProjectsPanelBody({ closeButton }: { closeButton: ReactNode }) {
+function ProjectsPanelBody({
+  closeButton,
+  panelOpen,
+}: {
+  closeButton: ReactNode
+  panelOpen: boolean
+}) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
   const [expandedMediaSrc, setExpandedMediaSrc] = useState<string | null>(null)
+  const [gridReady, setGridReady] = useState(false)
+  const [visibleProjectCount, setVisibleProjectCount] = useState(0)
   const selectedProject = PROJECTS.find((project) => project.id === selectedProjectId)
+
+  useEffect(() => {
+    if (!panelOpen || selectedProjectId) {
+      setGridReady(false)
+      setVisibleProjectCount(0)
+      return
+    }
+
+    const delay = prefersSingleTapOpen() ? 360 : 80
+    const id = window.setTimeout(() => {
+      setGridReady(true)
+    }, delay)
+    return () => window.clearTimeout(id)
+  }, [panelOpen, selectedProjectId])
+
+  useEffect(() => {
+    if (!gridReady) {
+      setVisibleProjectCount(0)
+      return
+    }
+
+    let nextCount = 0
+    const id = window.setInterval(() => {
+      nextCount += 1
+      setVisibleProjectCount(nextCount)
+      if (nextCount >= PROJECTS.length) window.clearInterval(id)
+    }, 55)
+    return () => window.clearInterval(id)
+  }, [gridReady])
 
   if (selectedProject) {
     const expandedScreenshot = selectedProject.screenshots?.find(
@@ -716,15 +753,17 @@ function ProjectsPanelBody({ closeButton }: { closeButton: ReactNode }) {
           End-to-end projects I designed, built, and shipped across product, interface, backend
           systems, AI workflows, and tooling.
         </p>
-      <div className="projects-grid">
-        {PROJECTS.map((project) => (
-          <ProjectTile
-            key={project.id}
-            project={project}
-            onSelect={() => setSelectedProjectId(project.id)}
-          />
-        ))}
-      </div>
+      {gridReady && (
+        <div className="projects-grid">
+          {PROJECTS.slice(0, visibleProjectCount).map((project) => (
+            <ProjectTile
+              key={project.id}
+              project={project}
+              onSelect={() => setSelectedProjectId(project.id)}
+            />
+          ))}
+        </div>
+      )}
     </section>
   </div>
   )
