@@ -1455,31 +1455,33 @@ function AboutPanelBody({ closeButton }: { closeButton: ReactNode }) {
 
   return (
     <div className="about-body">
-      {closeButton}
       <div className="about-content">
-        <div className="about-topbar">
-          <nav className="about-readout" aria-label="About profile selector">
-            <div className="about-switcher" role="group" aria-label="About profile view">
-              {(Object.keys(ABOUT_MODES) as AboutMode[]).map((id) => (
-                <button
-                  key={id}
-                  type="button"
-                  className="about-switcher__button"
-                  aria-pressed={activeMode === id}
-                  onClick={() => setActiveMode(id)}
-                  data-interactive
-                >
-                  <span className="about-switcher__chev" aria-hidden="true">
-                    ▸
-                  </span>
-                  <span className="about-switcher__label" data-text={ABOUT_MODES[id].label}>
-                    {ABOUT_MODES[id].label}
-                  </span>
-                  <span className="about-switcher__stripe" aria-hidden="true" />
-                </button>
-              ))}
-            </div>
-          </nav>
+        <div className="about-header">
+          {closeButton}
+          <div className="about-topbar">
+            <nav className="about-readout" aria-label="About profile selector">
+              <div className="about-switcher" role="group" aria-label="About profile view">
+                {(Object.keys(ABOUT_MODES) as AboutMode[]).map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    className="about-switcher__button"
+                    aria-pressed={activeMode === id}
+                    onClick={() => setActiveMode(id)}
+                    data-interactive
+                  >
+                    <span className="about-switcher__chev" aria-hidden="true">
+                      ▸
+                    </span>
+                    <span className="about-switcher__label" data-text={ABOUT_MODES[id].label}>
+                      {ABOUT_MODES[id].label}
+                    </span>
+                    <span className="about-switcher__stripe" aria-hidden="true" />
+                  </button>
+                ))}
+              </div>
+            </nav>
+          </div>
         </div>
 
         <section
