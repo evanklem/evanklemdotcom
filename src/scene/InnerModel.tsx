@@ -36,6 +36,12 @@ const PER_SECTION_SCALE: Record<SectionId, number> = {
   art: 1.0,
 }
 
+const PER_SECTION_DESKTOP_X_OFFSET: Record<SectionId, number> = {
+  about: 0,
+  projects: 0.12,
+  art: 0,
+}
+
 const ORIGINAL_MODEL_BOUNDS: Record<SectionId, { max: number; center: Vector3 }> = {
   about: { max: 0.0844, center: new Vector3(-0.1897, 0.043, 0.0002) },
   projects: { max: 0.2055, center: new Vector3(0.0009, -0.0028, 0.0024) },
@@ -231,7 +237,10 @@ export function InnerModel({ id, tint, modelPath }: Props) {
     const activeDesktopX = leftLimit <= rightLimit
       ? Math.min(Math.max(preferredX, leftLimit), rightLimit)
       : (leftLimit + rightLimit) / 2
-    const targetX = compact ? isActive ? ACTIVE_X_COMPACT : 0 : isActive ? activeDesktopX : IDLE_X_DESKTOP
+    const desktopXOffset = isActive ? PER_SECTION_DESKTOP_X_OFFSET[id] ?? 0 : 0
+    const targetX = compact
+      ? isActive ? ACTIVE_X_COMPACT : 0
+      : isActive ? activeDesktopX + desktopXOffset : IDLE_X_DESKTOP
     const k = 1 - Math.exp(-delta / POS_LERP_TAU)
     posXRef.current += (targetX - posXRef.current) * k
 

@@ -1540,6 +1540,8 @@
   font-family: var(--font-mono);
   text-align: left;
   cursor: pointer;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--accent, #c4ff00) 8%, transparent),
     0 12px 28px rgba(0, 0, 0, 0.28),
@@ -1573,6 +1575,41 @@
     0 16px 36px rgba(0, 0, 0, 0.38),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .project-tile {
+    transition: none;
+  }
+
+  .project-tile:hover {
+    border-color: color-mix(in srgb, var(--accent, #c4ff00) 34%, rgba(0, 0, 0, 0.54));
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--accent, #c4ff00) 14%, rgba(255, 255, 255, 0.1)) 0,
+        color-mix(in srgb, var(--accent, #c4ff00) 4%, rgba(255, 255, 255, 0.04)) 2px,
+        transparent 2px
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--accent, #c4ff00) 10%, rgba(20, 24, 27, 0.72)) 0%,
+        rgba(5, 7, 10, 0.68) 62%,
+        color-mix(in srgb, var(--accent, #c4ff00) 7%, rgba(0, 0, 0, 0.78)) 100%
+      );
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent, #c4ff00) 8%, transparent),
+      0 12px 28px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.48);
+    transform: none;
+  }
+
+  .project-tile:hover .project-tile__glyph,
+  .project-tile:hover .project-tile__github-mark {
+    opacity: 0.82;
+    filter: none;
+  }
 }
 
 .project-tile:focus-visible,
@@ -3211,6 +3248,21 @@
   .project-detail__section p {
     font-size: 13px;
     line-height: 1.56;
+  }
+}
+
+@media (max-width: 900px) and (hover: none), (max-width: 900px) and (pointer: coarse) {
+  .project-tile {
+    transition: none;
+  }
+
+  .project-tile:hover {
+    border-color: color-mix(in srgb, var(--accent, #c4ff00) 34%, rgba(0, 0, 0, 0.54));
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent, #c4ff00) 7%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.42);
+    transform: none;
   }
 }
 
