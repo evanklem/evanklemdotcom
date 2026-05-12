@@ -21,12 +21,10 @@ const VISIBLE_SCALE = 1.0
 const DESKTOP_REVEAL_DELAY_MS = 80
 const COMPACT_REVEAL_DELAY_MS = 0
 const IDLE_X_DESKTOP = -0.66
-const ACTIVE_X_DESKTOP = -1.72
 const ACTIVE_Y_COMPACT = 0.82
 const ACTIVE_X_COMPACT = 0
 const POS_LERP_TAU = 0.18
 const DESKTOP_PANEL_LEFT_NDC = -0.2
-const DESKTOP_EXPOSED_CENTER_NDC = -0.6
 const DESKTOP_FRAME_MARGIN = 0.08
 const DESKTOP_MIN_VISIBLE_SCALE = 0.44
 
@@ -38,7 +36,7 @@ const PER_SECTION_SCALE: Record<SectionId, number> = {
 
 const PER_SECTION_DESKTOP_X_OFFSET: Record<SectionId, number> = {
   about: 0,
-  projects: 0.12,
+  projects: 0,
   art: 0,
 }
 
@@ -222,21 +220,23 @@ export function InnerModel({ id, tint, modelPath }: Props) {
     const visibleRadius = (MODEL_TARGET_SIZE * sectionScale) / 2
     const halfFrameWidth = getSceneHalfWidth(size.width, size.height)
     const halfFrameHeight = getSceneHalfHeight()
+    const exposedLeftX = -halfFrameWidth
+    const panelLeftX = halfFrameWidth * DESKTOP_PANEL_LEFT_NDC
+    const exposedCenterX = (exposedLeftX + panelLeftX) / 2
+    const exposedHalfWidth = (panelLeftX - exposedLeftX) / 2
     const verticalScale = (halfFrameHeight - DESKTOP_FRAME_MARGIN) / visibleRadius
-    const horizontalScale = ((halfFrameWidth * 0.4) - DESKTOP_FRAME_MARGIN) / visibleRadius
+    const horizontalScale = (exposedHalfWidth - DESKTOP_FRAME_MARGIN) / visibleRadius
     const desktopScale = Math.min(
       1,
       Math.max(DESKTOP_MIN_VISIBLE_SCALE, Math.min(horizontalScale, verticalScale)),
     )
     const baseScale = compact ? isActive ? 0.52 : 0.62 : isActive ? desktopScale : 1.0
     const frameRadius = visibleRadius * baseScale
-    const leftLimit = -halfFrameWidth + frameRadius + DESKTOP_FRAME_MARGIN
-    const rightLimit = (halfFrameWidth * DESKTOP_PANEL_LEFT_NDC) - frameRadius - DESKTOP_FRAME_MARGIN
-    const exposedCenterX = halfFrameWidth * DESKTOP_EXPOSED_CENTER_NDC
-    const preferredX = Math.min(ACTIVE_X_DESKTOP, exposedCenterX)
+    const leftLimit = exposedLeftX + frameRadius + DESKTOP_FRAME_MARGIN
+    const rightLimit = panelLeftX - frameRadius - DESKTOP_FRAME_MARGIN
     const activeDesktopX = leftLimit <= rightLimit
-      ? Math.min(Math.max(preferredX, leftLimit), rightLimit)
-      : (leftLimit + rightLimit) / 2
+      ? Math.min(Math.max(exposedCenterX, leftLimit), rightLimit)
+      : exposedCenterX
     const desktopXOffset = isActive ? PER_SECTION_DESKTOP_X_OFFSET[id] ?? 0 : 0
     const targetX = compact
       ? isActive ? ACTIVE_X_COMPACT : 0
