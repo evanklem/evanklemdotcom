@@ -1,6 +1,7 @@
 import { Suspense, useEffect } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
-import { AdaptiveDpr, AdaptiveEvents } from '@react-three/drei'
+import { AdaptiveDpr } from '@react-three/drei/core/AdaptiveDpr.js'
+import { AdaptiveEvents } from '@react-three/drei/core/AdaptiveEvents.js'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import { Vase } from './Vase'
 import { InnerModel } from './InnerModel'

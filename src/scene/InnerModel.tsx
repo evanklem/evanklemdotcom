@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { animated, useSpring } from '@react-spring/three'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei/core/Gltf.js'
 import { useDrag } from '@use-gesture/react'
 import { Box3, Group, Mesh, MeshStandardMaterial, ShaderMaterial, type Texture, Vector3 } from 'three'
 import type { GLTF } from 'three-stdlib'

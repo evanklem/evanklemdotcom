@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/immutability, react-hooks/set-state-in-effect */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei/core/Gltf.js'
 import { useDrag } from '@use-gesture/react'
 import {
   Box3,

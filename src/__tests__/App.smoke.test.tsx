@@ -6,6 +6,14 @@ vi.mock('@react-three/fiber', () => ({
   Canvas: () => null,
 }))
 
+vi.mock('@react-three/drei/core/Gltf.js', () => ({
+  useGLTF: Object.assign(vi.fn(), {
+    clear: vi.fn(),
+    preload: vi.fn(),
+    setDecoderPath: vi.fn(),
+  }),
+}))
+
 import App from '../App'
 
 describe('App', () => {
