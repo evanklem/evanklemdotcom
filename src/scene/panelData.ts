@@ -526,6 +526,7 @@ export const PROJECTS: Project[] = [
       'A hand-built portfolio that treats the site itself as the product: a live 3D scene, section-specific interfaces, museum-scanned artifacts, and a custom archive for project and art content.',
     cloud: '/content/projects/clouds/cloud-tile-05.png',
     glyph: '/glyphs/projects/tzihb_write_inv.png',
+    links: [{ label: 'GitHub', href: 'https://github.com/evanklem/evanklemdotcom' }],
     sections: [
       {
         title: 'Overview',
