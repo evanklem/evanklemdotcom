@@ -243,9 +243,25 @@ function ProjectDetail({
         ))}
       </div>
 
-      {project.screenshots && project.screenshots.length > 0 && (
-        <div className="project-media" aria-label={`${project.name} screenshots`}>
-          {project.screenshots.map((screenshot) => (
+      {(project.video || (project.screenshots && project.screenshots.length > 0)) && (
+        <div className="project-media" aria-label={`${project.name} media`}>
+          {project.video && (
+            <figure className="project-media__frame project-media__frame--video">
+              <video
+                className="project-detail__video"
+                src={project.video.src}
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label={`${project.name} demo video`}
+              />
+              {project.video.caption && <figcaption>{project.video.caption}</figcaption>}
+            </figure>
+          )}
+          {project.screenshots?.map((screenshot) => (
             <figure key={screenshot.src} className="project-media__frame">
               <button
                 type="button"
@@ -360,6 +376,62 @@ function ProjectDiagram({ project }: { project: Project }) {
             <path d="M247 125 H265" markerEnd="url(#agent-arrow)" />
             <path d="M375 125 H393" markerEnd="url(#agent-arrow)" />
             <path d="M503 125 H521" markerEnd="url(#agent-arrow)" />
+          </g>
+        </svg>
+      </section>
+    )
+  }
+
+  if (diagram.kind === 'system') {
+    return (
+      <section className="project-diagram" aria-labelledby={titleId} data-kind={diagram.kind}>
+        <h4 id={titleId}>{diagram.title}</h4>
+        <svg
+          className="project-schematic project-schematic--system"
+          viewBox="0 0 640 250"
+          role="img"
+          aria-label="Polypore IDE architecture: the agent drives dockable panels through the MCP server while the user works in the same shell, sharing one workspace"
+        >
+          <defs>
+            <marker id="poly-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" />
+            </marker>
+          </defs>
+
+          <g className="project-schematic__frame">
+            <rect x="346" y="20" width="282" height="210" rx="5" />
+          </g>
+          <g className="project-schematic__callouts">
+            <text x="487" y="40">Dockable shell</text>
+          </g>
+
+          <g className="project-schematic__nodes">
+            <rect x="12" y="83" width="108" height="60" rx="4" />
+            <text x="66" y="106">Agent</text>
+            <text x="66" y="126" className="project-schematic__sub">primary actor</text>
+
+            <rect x="176" y="83" width="120" height="60" rx="4" />
+            <text x="236" y="106">MCP server</text>
+            <text x="236" y="126" className="project-schematic__sub">22+ tools</text>
+
+            <rect x="12" y="166" width="108" height="60" rx="4" />
+            <text x="66" y="189">User</text>
+            <text x="66" y="209" className="project-schematic__sub">shared workspace</text>
+
+            <rect x="366" y="60" width="116" height="66" rx="4" />
+            <text x="424" y="93">editor</text>
+            <rect x="494" y="60" width="116" height="66" rx="4" />
+            <text x="552" y="93">debug</text>
+            <rect x="366" y="146" width="116" height="66" rx="4" />
+            <text x="424" y="179">memory</text>
+            <rect x="494" y="146" width="116" height="66" rx="4" />
+            <text x="552" y="179">agent</text>
+          </g>
+
+          <g className="project-schematic__lines">
+            <path d="M120 113 H176" markerEnd="url(#poly-arrow)" />
+            <path d="M296 113 H346" markerEnd="url(#poly-arrow)" />
+            <path d="M120 196 H346" markerEnd="url(#poly-arrow)" />
           </g>
         </svg>
       </section>

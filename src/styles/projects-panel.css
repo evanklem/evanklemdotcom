@@ -1048,6 +1048,17 @@
   z-index: 1;
 }
 
+.project-detail__video {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid color-mix(in srgb, var(--accent, #c4ff00) 28%, rgba(255, 255, 255, 0.1));
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.44);
+}
+
 .project-media__expand:hover img,
 .project-media__expand:focus-visible img {
   border-color: color-mix(in srgb, var(--accent, #c4ff00) 72%, #fff);

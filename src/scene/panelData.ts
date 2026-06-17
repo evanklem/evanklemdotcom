@@ -68,7 +68,7 @@ export const ABOUT_MODES: Record<
     label: 'Workflow',
     image: '/content/about/computerrv.png',
     alt: 'RGB-lit computer setup running Evan’s Linux environment',
-    headline: 'Omarchy, JetBrains, Claude Code.',
+    headline: 'Omarchy, Polypore, Claude Code.',
     intro: 'My tools are opinionated, keyboard-driven, and easy to make my own.',
   },
 }
@@ -271,6 +271,10 @@ export type Project = {
   quickRead?: string
   cloud: string
   glyph: string
+  video?: {
+    src: string
+    caption?: string
+  }
   screenshots?: Array<{
     src: string
     alt: string
@@ -281,7 +285,7 @@ export type Project = {
     href: string
   }>
   diagram?: {
-    kind: 'architecture' | 'decision' | 'loop'
+    kind: 'architecture' | 'decision' | 'loop' | 'system'
     title: string
     lanes?: Array<{
       label: string
@@ -416,11 +420,49 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
+    id: 'polypore',
+    name: 'Polypore',
+    category: 'Agentic IDE',
+    meta: 'Tauri / Agents',
+    tileLine: 'Agentic desktop IDE where every surface is a dockable panel and a built-in MCP server gives agents direct control.',
+    summary:
+      'A cross-platform desktop IDE built around the agent as the primary actor, where every surface is a sandboxed dockable panel behind a shared contract.',
+    cloud: '/content/projects/clouds/cloud-tile-04.png',
+    glyph: '/glyphs/projects/tok_flint_inv.png',
+    links: [{ label: 'GitHub', href: 'https://github.com/evanklem/polypore' }],
+    video: {
+      src: '/content/projects/polyporedemo.mp4',
+      caption: 'Demo',
+    },
+    diagram: {
+      kind: 'system',
+      title: 'Architecture',
+    },
+    sections: [
+      {
+        title: 'Overview',
+        body: 'Polypore is a language- and OS-agnostic desktop IDE structured around agentic coding. Instead of a code editor with an agent panel added later, the layout, memory system, debug tooling, and MCP server are all designed around the agent as the primary actor. Every surface is a dockable panel that can be split, reordered, or closed, and the whole stack is built to keep up as the right models and orchestration patterns shift.',
+      },
+      {
+        title: 'Built',
+        body: 'I built the panel system on Dockview with a shared HostRpcServer contract, so built-in panels and third-party plugins both run as sandboxed iframes behind the same interface. Any piece of the IDE can be swapped, extended, or dropped without touching the core. The app ships as a self-updating Tauri build for Linux, macOS, and Windows with no telemetry.',
+      },
+      {
+        title: 'Agent control',
+        body: 'A Node MCP sidecar ships with Polypore and is picked up automatically from .mcp.json. It exposes 22+ tools across debug sessions, the project memory base, verification suites, tasks, workflow phase, and in-editor formatting, so agents drive the IDE the same way a person would. A secret broker keeps credentials in the OS keyring and strips them from agent environments, replacing each value with a handle the model resolves only through mediated requests, so plaintext never reaches the model.',
+      },
+      {
+        title: 'Stack',
+        body: 'Tauri 2, Rust, React 18, TypeScript, Dockview, Monaco, Node, MCP',
+      },
+    ],
+  },
+  {
     id: 'evanflow',
     name: 'Evanflow',
     category: 'Open Source',
     meta: 'Agents / TDD',
-    tileLine: 'Open-source Claude Code workflow with nearly 400 GitHub stars.',
+    tileLine: 'Open-source Claude Code workflow with over 400 GitHub stars.',
     summary: 'An open-source Claude Code workflow for planning, test-first implementation, review, and iteration.',
     cloud: '/content/projects/clouds/cloud-tile-02.png',
     glyph: '/glyphs/projects/bih_road_inv.png',
@@ -437,7 +479,7 @@ export const PROJECTS: Project[] = [
     sections: [
       {
         title: 'Overview',
-        body: 'Evanflow is a Claude Code plugin that turns loose AI coding sessions into a repeatable workflow. It walks each task from brainstorm through plan, test-first implementation, and review, with a built-in iteration loop and context-management skills for when the conversation gets long. The project has earned nearly 400 GitHub stars.',
+        body: 'Evanflow is a Claude Code plugin that turns loose AI coding sessions into a repeatable workflow. It walks each task from brainstorm through plan, test-first implementation, and review, with a built-in iteration loop and context-management skills for when the conversation gets long. The project has earned over 400 GitHub stars.',
       },
       {
         title: 'Built',
@@ -483,36 +525,6 @@ export const PROJECTS: Project[] = [
       {
         title: 'Stack',
         body: 'Omarchy, Hyprland, Alacritty, Neovim/LazyVim, Waybar, btop, Mako, Walker, Hyprlock',
-      },
-    ],
-  },
-  {
-    id: 'ai-fraud-detection',
-    name: 'AI Fraud Detection System',
-    category: 'Machine Learning',
-    meta: 'Python / ML',
-    tileLine: 'Imbalanced fraud classifier.',
-    summary:
-      'A credit card fraud classifier built around rare-event detection on heavily imbalanced transaction data.',
-    cloud: '/content/projects/clouds/cloud-tile-04.png',
-    glyph: '/glyphs/projects/tok_flint_inv.png',
-    links: [{ label: 'GitHub', href: 'https://github.com/evanklem/frauddetector' }],
-    sections: [
-      {
-        title: 'Overview',
-        body: 'AI Fraud Detection System is a Python machine learning pipeline for classifying credit card fraud from 284,807 transactions where fraudulent samples make up less than 1 percent of the dataset. In project evaluation, the tuned model reached up to a 0.88 F1 score, a metric that balances catching fraud with avoiding false alarms.',
-      },
-      {
-        title: 'Built',
-        body: 'I built the pipeline from raw data to a saved model. After basic cleanup like removing duplicate transactions and rescaling outlier-heavy columns, the bigger problem was the data itself: real fraud is under one percent of transactions, so a model could score 99 percent accuracy just by guessing "not fraud" every time. To get around that I used SMOTE, which synthesizes extra fraud examples to balance the training set. From there I trained and tuned two classifiers, a Random Forest and an XGBoost model, and the winning version gets saved alongside its evaluation report.',
-      },
-      {
-        title: 'Evaluation',
-        body: 'With fraud under one percent of the data, a model can look accurate while still missing the thing it is supposed to catch. I evaluated each model on what actually catches the rare class: precision and recall on fraud cases, F1, the confusion matrix, and AUPRC. Splits are stratified so the train and test sets carry the same fraud ratio as the original data, and 5-fold cross-validation runs on top so the score averages across several slices of the data instead of one lucky split.',
-      },
-      {
-        title: 'Stack',
-        body: 'Python, pandas, scikit-learn, XGBoost, imbalanced-learn, SMOTE, Matplotlib',
       },
     ],
   },

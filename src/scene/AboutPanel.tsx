@@ -180,17 +180,16 @@ function AboutModeContent({ activeMode }: { activeMode: AboutMode }) {
           Workflow
         </h4>
         <p>
-          I like Linux because open source matters to me, and the workflow feels better once you
-          get it set up. Hyprland lets me use a keyboard-driven desktop that feels fast and
-          personal. JetBrains is my IDE because its Linux support is solid. Claude Code is my daily
-          driver. I use agentic coding a lot, and I’m very comfortable building with it. It has
-          become my favorite way to work.
+          I like Linux because open source matters to me and the workflow feels better once you get
+          it set up. Hyprland lets me use a keyboard-driven desktop that feels fast and personal.
+          Claude Code is my daily driver. I do a lot of agentic coding and I’m comfortable building
+          with it.
         </p>
         <p>
-          I also built Evanflow, an open-source Claude Code workflow system that grew out of my
-          process while building Ephemera. It packages test-driven development and iterative
-          feedback cycles into a repeatable agent workflow for planning, implementation, testing,
-          review, and refinement. It has nearly 400 GitHub stars.
+          These days I mostly work in Polypore, an IDE I built for agentic coding. Every surface is
+          a dockable panel and a built-in MCP server lets agents drive the tooling directly. Before
+          that I built Evanflow, an open-source Claude Code workflow that grew out of my process
+          while building Ephemera and has over 400 GitHub stars.
         </p>
       </section>
     </div>

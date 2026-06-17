@@ -7,6 +7,6 @@ Original source image paths used on 2026-05-06:
 - AI Talent Agent: IL / ILA, see/observe, https://mayaglyphs.org/LooperMacri600/HE1_1.png
 - Evanflow: BIH, road/way, https://mayaglyphs.org/BonnImg/0585st.jpg
 - Omarchy Avocado Theme: AHN, leaf/paper, https://mayaglyphs.org/LooperMacri600/HT1_1.png
-- AI Fraud Detection System: TOK, flint/cut, https://mayaglyphs.org/LooperMacri600/ZBC_1.png
+- Polypore: TOK, flint/cut, https://mayaglyphs.org/LooperMacri600/ZBC_1.png
 - 8bitcpu: WAXAK, number 8, https://mayaglyphs.org/BonnImg/5008st.jpg
 - PartyPredict: WINIK / WINAK / WINAL, person, https://mayaglyphs.org/BonnImg/0521st.jpg
