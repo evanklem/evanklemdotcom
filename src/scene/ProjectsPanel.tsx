@@ -425,7 +425,7 @@ function ProjectDiagram({ project }: { project: Project }) {
             <rect x="366" y="146" width="116" height="66" rx="4" />
             <text x="424" y="179">memory</text>
             <rect x="494" y="146" width="116" height="66" rx="4" />
-            <text x="552" y="179">agent</text>
+            <text x="552" y="179">terminal</text>
           </g>
 
           <g className="project-schematic__lines">
