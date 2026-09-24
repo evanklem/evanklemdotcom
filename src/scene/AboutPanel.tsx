@@ -60,7 +60,7 @@ export function AboutPanelBody({ closeButton }: { closeButton: ReactNode }) {
             <div className="about-actions" aria-label="About links">
               <a
                 className="about-action"
-                href="/EvanRamirezKlemResume.pdf"
+                href="/EvanRamirezKlemResume-2026.pdf"
                 target="_blank"
                 rel="noreferrer"
                 data-interactive
